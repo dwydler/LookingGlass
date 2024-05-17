@@ -21,11 +21,13 @@ if (file_exists('LookingGlass/Config.php')) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="LookingGlass - Open source PHP looking glass">
-    <meta name="author" content="Daniel Wydler">
+  <head>  
+    <!-- General settings -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="LookingGlass - Open source PHP looking glass" />
+    <meta name="author" content="Daniel Wydler" />
 
     <!-- Website title -->
     <title><?php echo $siteName; ?></title>
