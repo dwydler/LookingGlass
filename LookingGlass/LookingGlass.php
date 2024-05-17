@@ -342,8 +342,8 @@ class LookingGlass
      */
     private function validUrl($url)
     {
-        // check for http
-        if (stripos($url, 'http') === false) {
+        // check for http/s
+        if ( (stripos($url, 'http://') !== 0) && (stripos($url, 'https://') !== 0) ) {
             $url = 'http://' . $url;
         }
 
