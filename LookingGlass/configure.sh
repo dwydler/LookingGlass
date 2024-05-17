@@ -164,13 +164,13 @@ EOF
 function requirements()
 {
   sleep 1
-  # Check for apt-get/yum
-  if [ -f /usr/bin/apt-get ]; then
+  # Check for apt/yum
+  if [ -f /usr/bin/apt ]; then
     # Check for root
     if [ $(id -u) != "0" ]; then
-      INSTALL='sudo apt-get'
+      INSTALL='sudo apt'
     else
-      INSTALL='apt-get'
+      INSTALL='apt'
     fi
   elif [ -f /usr/bin/yum ]; then
     # Check for root
