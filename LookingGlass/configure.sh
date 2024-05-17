@@ -109,8 +109,8 @@ function database()
       echo 'Creating SQLite database...'
       sqlite3 ratelimit.db  'CREATE TABLE RateLimit (ip TEXT UNIQUE NOT NULL, hits INTEGER NOT NULL DEFAULT 0, accessed INTEGER NOT NULL);'
       sqlite3 ratelimit.db 'CREATE UNIQUE INDEX "RateLimit_ip" ON "RateLimit" ("ip");'
-      read -e -p 'Enter the username of your webserver (E.g. www-data): ' USER
-      read -e -p 'Enter the user group of your webserver (E.g. www-data): ' GROUP
+      read -e -p 'Enter the username of your webserver (E.g. www-data): ' -i "$(whoami)" USER
+      read -e -p 'Enter the user group of your webserver (E.g. www-data): ' -i "$(id -g -n)" GROUP
       # Change owner of folder & DB
       if [[ -n $USER ]]; then
           if [[ -n $GROUP ]]; then
