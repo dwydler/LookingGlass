@@ -290,7 +290,7 @@ function setup()
     echo
     echo 'Removing old test files:'
     # Delete old test files
-    local REMOVE=($(ls ../*.test 2>/dev/null))
+    local REMOVE=($(ls ../*.bin 2>/dev/null))
     for i in "${REMOVE[@]}"; do
       if [ -f "${i}" ]; then
         echo "Removing ${i}"
@@ -318,9 +318,9 @@ function testFiles()
 
   # Check for and/or create test file
   for i in "${TEST[@]}"; do
-    if [[ -n i ]] && [ ! -f "../${i}.test" ]; then
+    if [[ -n i ]] && [ ! -f "../${i}.bin" ]; then
       echo "Creating $i test file"
-      shred --exact --iterations=1 --size="${i}" - > "../${i}.test"
+      shred --exact --iterations=1 --size="${i}" - > "../${i}.bin"
       A=$((A+1))
       sleep 1
     fi

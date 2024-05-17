@@ -9,4 +9,4 @@ RedirectMatch 404 /LookingGlass/(.*\.(?:conf|db|sh)|(?:Config|LookingGlass|RateL
 RedirectMatch 404 /\.
 
 # Disable gzip for test files
-SetEnvIf Request_URI \.test$ no-gzip dont-vary
+SetEnvIf Request_URI \.bin$ no-gzip dont-vary

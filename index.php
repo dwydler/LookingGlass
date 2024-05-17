@@ -81,7 +81,7 @@ if (file_exists('LookingGlass/Config.php')) {
                 <p><?php if (!empty($ipv6)) { echo 'Test IPv6: ',$ipv6; } ?></p>
                 <p>Test files: <?php
                   foreach ($testFiles as $val) {
-                    echo "<a href=\"{$val}.test\" id=\"testfile\">{$val}</a> ";
+                    echo "<a href=\"{$val}.bin\" id=\"testfile\">{$val}</a> ";
                   }
                 ?></p>
               </div>
