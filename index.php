@@ -21,7 +21,7 @@ if (file_exists('LookingGlass/Config.php')) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>  
+  <head>
     <!-- General settings -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
