@@ -5,8 +5,6 @@
 LookingGlass is a user-friendly PHP based looking glass that allows the public (via a web interface) to execute network
 commands on behalf of your server.
 
-Current version: v1.3.0
-
 It's recommended that everyone updates their existing install!
 
 ## Features

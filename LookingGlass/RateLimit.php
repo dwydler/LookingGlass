@@ -7,7 +7,6 @@
  * @copyright   2015 Nick Adams.
  * @link        http://iamtelephone.com
  * @license     http://opensource.org/licenses/MIT MIT License
- * @version     1.3.0
  */
 namespace Telephone\LookingGlass;
 

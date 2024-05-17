@@ -1,4 +1,14 @@
 <?php
+/**
+ * LookingGlass - User friendly PHP Looking Glass
+ *
+ * @package     LookingGlass
+ * @author      Nick Adams <nick@iamtelephone.com>
+ * @copyright   2015 Nick Adams.
+ * @link        http://iamtelephone.com
+ * @license     http://opensource.org/licenses/MIT MIT License
+ */
+
 // lazy config check/load
 if (file_exists('LookingGlass/Config.php')) {
   require 'LookingGlass/Config.php';
@@ -11,36 +21,6 @@ if (file_exists('LookingGlass/Config.php')) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<!--
-                 __ _
-               .: .' '.
-              /: /     \_
-             ;: ;  ,-'/`:\
-             |: | |  |() :|
-             ;: ;  '-.\_:/
-              \: \     /`
-               ':_'._.'
-                  ||
-                 /__\
-      .---.     {====}
-    .'   _,"-,__|::  |
-   /    ((O)=;--.::  |
-  ;      `|: |  |::  |
-  |       |: |  |::  |            *****************************
-  |       |: |  |::  |            * LookingGlass by Telephone *
-  |       |: |  |::  |            *  http://iamtelephone.com  *
-  |       |: |  |::  |            *****************************
-  |       |: |  |::  |
-  |      /:'__\ |::  |
-  |     [______]|::  |
-  |      `----` |::  |__
-  |         _.--|::  |  ''--._
-  ;       .'  __{====}__      '.
-   \    .'_.-'._ `""` _.'-._    '.
-    '--'/`      `''''`      `\    '.__
-        '._                _.'
-           `""--......--""`
--->
   <head>
     <meta charset="utf-8">
     <title><?php echo $siteName; ?> - Looking Glass</title>
