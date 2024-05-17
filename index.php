@@ -122,7 +122,7 @@ if (file_exists('LookingGlass/Config.php')) {
     </div><!-- /container -->
 
     <!-- Javascript -->
-    <script src="assets/js/jquery-1.11.2.min.js"></script>
+    <script src="assets/js/jquery-3.7.0.min.js"></script>
     <script src="assets/js/LookingGlass.min.js"></script>
     <script src="assets/js/XMLHttpRequest.min.js"></script>
   </body>
