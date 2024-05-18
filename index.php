@@ -12,7 +12,7 @@
 // lazy config check/load
 if (file_exists('LookingGlass/Config.php')) {
   require 'LookingGlass/Config.php';
-  if (!isset($ipv4, $ipv6, $siteName, $siteUrl, $serverLocation, $testFiles, $theme)) {
+  if (!isset($ipv4, $ipv6, $siteName, $siteUrl, $serverLocation, $testFiles)) {
     exit('Configuration variable/s missing. Please run configure.sh');
   }
 } else {
@@ -38,92 +38,119 @@ if (file_exists('LookingGlass/Config.php')) {
     <![endif]-->
 
     <!-- Styles -->
-    <link href="assets/css/<?php echo $theme; ?>.min.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
   </head>
   <body>
-    <!-- Container -->
-    <div class="container">
+	<!-- Container -->
+	<div class="container">
 
-      <!-- Header -->
-      <header class="header nohighlight" id="overview">
-        <div class="row">
-          <div class="span12">
-            <h1><a id="title" href="<?php echo $siteUrl; ?>"><?php echo $siteName; ?></a></h1>
-          </div>
-        </div>
-      </header>
+		<!-- Header -->
+		<div class="row" id="header">
+			<div class="col-xs-12">
+				<div class="page-header">
+					<h1><a id="title" href="<?php echo $siteUrl; ?>"><?php echo $siteName; ?></a></h1>
+				</div>
+			</div>
+		</div>
+		<!-- /Header -->
 
-      <!-- Network Information -->
-      <section id="information">
-        <div class="row">
-          <div class="span12">
-            <div class="well">
-              <span id="legend">Network information</span><!-- IE/Safari dislike <legend> out of context -->
-              <p>Server Location: <b><?php echo $serverLocation; ?></b></p>
-              <div style="margin-left: 10px;">
-                <p>Test IPv4: <?php echo $ipv4; ?></p>
-                <p><?php if (!empty($ipv6)) { echo 'Test IPv6: ',$ipv6; } ?></p>
-                <p>Test files: <?php
-                  foreach ($testFiles as $val) {
-                    echo "<a href=\"{$val}.bin\" id=\"testfile\">{$val}</a> ";
-                  }
-                ?></p>
-              </div>
-              <p>Your IP Address: <b><a href="#tests" id="userip"><?php echo $_SERVER['REMOTE_ADDR']; ?></a></b></p>
-            </div>
-          </div>
-        </div>
-      </section>
+		<!-- Network Information -->
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">Network information</div>
+					<div class="panel-body">
+						<p>Server Location: <strong><?php echo $serverLocation; ?></strong></p>
+						<p>IPv4 Address: <?php echo $ipv4; ?></p>
+						<?php if (!empty($ipv6)) { echo '<p>IPv6 Address: '; echo $ipv6; echo '</p>'; } ?>
+						<p>Your IP Address: <strong><a href="#tests" id="userip"><?php echo $_SERVER['REMOTE_ADDR']; ?></a></strong></p>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">Network Test Files</div>
+					<div class="panel-body">
+						<h4>IPv4 Download Test</h4>
+						<?php
+							foreach ($testFiles as $val) 
+							{
+								echo "<a href=\"//{$ipv4}/{$val}.bin\" class=\"btn btn-xs btn-default\">{$val}</a> ";
+							}
+						?>
 
-      <!-- Network Tests -->
-      <section id="tests">
-        <div class="row">
-          <div class="span12">
-            <form class="well form-inline" id="networktest" action="#results" method="post">
-              <fieldset>
-                <span id="legend">Network tests</span>
-                <div id="hosterror" class="control-group">
-                  <div class="controls">
-                    <input id="host" name="host" type="text" class="input-large" placeholder="Host or IP address">
-                  </div>
-                </div>
-                <select name="cmd" class="input-medium" style="margin-left: 5px;">
-                  <option value="host">host</option>
-                  <option value="mtr">mtr</option>
-                  <?php if (!empty($ipv6)) { echo '<option value="mtr6">mtr6</option>'; } ?>
-                  <option value="ping" selected="selected">ping</option>
-                  <?php if (!empty($ipv6)) { echo '<option value="ping6">ping6</option>'; } ?>
-                  <option value="traceroute">traceroute</option>
-                  <?php if (!empty($ipv6)) { echo '<option value="traceroute6">traceroute6</option>'; } ?>
-                </select>
-                <button type="submit" id="submit" name="submit" class="btn btn-primary" style="margin-left: 10px;">Run Test</button>
-              </fieldset>
-            </form>
-          </div>
-        </div>
-      </section>
+						<?php if (!empty($ipv6)) 
+							{
+								echo "<h4>IPv6 Download Test</h4>";
+								foreach ($testFiles as $val) 
+									{
+										echo "<a href=\"//[{$ipv6}]/{$val}.bin\" class=\"btn btn-xs btn-default\">{$val}</a> ";
+									}
+								} 
+							?>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Network Information -->
 
-      <!-- Results -->
-      <section id="results" style="display:none">
-        <div class="row">
-          <div class="span12">
-            <div class="well">
-              <span id="legend">Results</span>
-              <pre id="response" style="display:none"></pre>
-            </div>
-          </div>
-        </div>
-      </section>
+		<!-- Network Tests -->
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">Network tests</div>
+					<div class="panel-body">
+						<form class="form-inline" id="networktest" action="#results" method="post">
+							<div id="hosterror" class="form-group">
+								<div class="controls">
+									<input id="host" name="host" type="text" class="form-control" placeholder="Host or IP address">
+								</div>
+							</div>
+							<div class="form-group">
+								<select name="cmd" class="form-control">
+									<option value="host">host</option>
+                  					<option value="mtr">mtr</option>
+                  					<?php if (!empty($ipv6)) { echo '<option value="mtr6">mtr6</option>'; } ?>
+                  					<option value="ping" selected="selected">ping</option>
+                  					<?php if (!empty($ipv6)) { echo '<option value="ping6">ping6</option>'; } ?>
+                  					<option value="traceroute">traceroute</option>
+                  					<?php if (!empty($ipv6)) { echo '<option value="traceroute6">traceroute6</option>'; } ?>
+								</select>
+							</div>
 
-      <!-- Footer -->
-      <footer class="footer nohighlight">
-        <p class="pull-right">
-            <a href="#">Back to top</a>
-        </p>
-        <p>Powered by <a target="_blank" href="http://github.com/telephone/LookingGlass">LookingGlass</a> | Modified by <a target="_blank" href="https://github.com/dwydler/LookingGlass">Daniel Wydler</a></p>
-      </footer>
+							<button type="submit" id="submit" name="submit" class="btn btn-success">Run Test</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>									
+		<!-- /Network Tests -->
 
-    </div><!-- /container -->
+		<!-- Results -->
+		<div class="row" id="results" style="display:none">
+			<div class="col-xs-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">Results</div>
+					<div class="panel-body">
+						<pre id="response" style="display:none"></pre>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Results -->
+
+      	<!-- Footer -->
+      	<footer class="footer">
+			<p class="pull-right">
+				<a href="#">Back to top</a>
+        	</p>
+
+        	<p>Powered by <a target="_blank" href="http://github.com/telephone/LookingGlass">LookingGlass</a> | Modified by <a target="_blank" href="https://github.com/dwydler/LookingGlass">Daniel Wydler</a></p>
+      	</footer>
+		<!-- /Footer -->
+
+    </div>
+    <!-- /Container -->
 
     <!-- Javascript -->
     <script src="assets/js/jquery-3.7.0.min.js"></script>

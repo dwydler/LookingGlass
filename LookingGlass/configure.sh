@@ -51,7 +51,6 @@ EOF
   for i in "${TEST[@]}"; do
     echo "\$testFiles[] = '${i}';" >> "$DIR/$CONFIG"
   done
-  echo -e "// Theme\n\$theme = '${THEME}';" >> "$DIR/$CONFIG"
 
   sleep 1
 }
@@ -92,8 +91,6 @@ function config()
         URL=("$(echo $f2 | awk -F\' '{print $(NF-1)}')")
       elif [ $f1 = '$testFiles[]' ]; then
         TEST+=("$(echo $f2 | awk -F\' '{print $(NF-1)}')")
-      elif [ $f1 = '$theme' ]; then
-        THEME="$(echo $f2 | awk -F\' '{print $(NF-1)}')"
       fi
     fi
   done < "$DIR/$CONFIG"
@@ -330,61 +327,6 @@ function testFiles()
   fi
 }
 
-##
-# Choose default theme
-##
-function defaultTheme()
-{
-  # Set default theme
-  if [[ "$THEME" = '' ]]; then
-    THEME='cerulean'
-  fi
-
-  # Change theme
-  read -e -p "Would you like to choose a different theme? (y/n): " NEWTHEME
-  if [[ "$NEWTHEME" = 'y' ]] || [[ "$NEWTHEME" = 'yes' ]]; then
-    cat <<EOF
-
-#########################################
-#
-# Themes:
-#
-# 1) cerulean
-# 2) readable
-# 3) spacelab
-# 4) united
-#
-# Demo: http://lg.iamtelephone.com/themes
-#
-#########################################
-
-EOF
-  MATCH=
-  while [[ -z $MATCH ]]; do
-    themeChange
-  done
-  fi
-}
-
-##
-# Loop to change theme
-##
-function themeChange()
-{
-  read -e -p "Enter the name of the theme (case sensitive) [${THEME}]: " NEWTHEME
-
-  if [[ -n $NEWTHEME ]]; then
-    # Check for valid theme
-    VALID=(cerulean readable spacelab united)
-    MATCH=$(echo "${VALID[@]:0}" | grep -o $NEWTHEME)
-    if [[ ! -z $MATCH ]]; then
-      THEME=$NEWTHEME
-    fi
-  else
-    MATCH=' '
-  fi
-}
-
 
 ###########################
 ##                       ##
@@ -437,7 +379,6 @@ RATELIMIT=
 SITE=
 URL=
 TEST=()
-THEME=
 
 # Install required scripts
 echo 'Checking script requirements:'
@@ -461,9 +402,6 @@ cat <<EOF
 EOF
 echo 'Running setup:'
 setup
-echo
-# Theme
-defaultTheme
 echo
 # Create Config.php file
 echo 'Creating Config.php...'

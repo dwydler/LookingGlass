@@ -13,7 +13,7 @@ $(document).ready(function() {
     var data = 'cmd=' + $('select[name=cmd]').val() + '&host=' + host;
     // quick validation
     if (host == '') {
-        $('#hosterror').addClass('error');
+        $('#hosterror').addClass('has-error');
     }
     // submit form
     else {
@@ -37,14 +37,14 @@ $(document).ready(function() {
         if (xhr.responseText == '') {
           $('#response').hide();
         } else {
-          $('#hosterror').removeClass('error');
+          $('#hosterror').removeClass('has-error');
           $('#response, #results').show();
         }
 
         // output response
         if (xhr.responseText == 'Unauthorized request') {
           $('#results').hide();
-          $('#hosterror').addClass('error');
+          $('#hosterror').addClass('has-error');
         } else {
           $('#response').html(xhr.responseText.replace(/<br \/> +/g, '<br />'));
         }
