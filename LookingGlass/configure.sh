@@ -42,6 +42,10 @@ function createConfig()
 \$siteName = '${SITE}';
 // Site URL
 \$siteUrl = '${URL}';
+// Site URLv4
+\$siteUrlv4 = '${URLV4}';
+// Site URLv6
+\$siteUrlv6 = '${URLV6}';
 // Server location
 \$serverLocation = '${LOCATION}';
 // Test files
@@ -89,6 +93,10 @@ function config()
         SITE=("$(echo $f2 | awk -F\' '{print $(NF-1)}')")
       elif [ $f1 = '$siteUrl' ]; then
         URL=("$(echo $f2 | awk -F\' '{print $(NF-1)}')")
+      elif [ $f1 = '$siteUrlv4' ]; then
+			  URLV4=("$(echo $f2 | awk -F\' '{print $(NF-1)}')")
+		  elif [ $f1 = '$siteUrlv6' ]; then
+			  URLV6=("$(echo $f2 | awk -F\' '{print $(NF-1)}')")
       elif [ $f1 = '$testFiles[]' ]; then
         TEST+=("$(echo $f2 | awk -F\' '{print $(NF-1)}')")
       fi
@@ -248,6 +256,8 @@ function setup()
   # User input
   read -e -p "Enter your website name (Header/Logo) [${SITE}]: " S
   read -e -p "Enter the public URL to this LG (including http://) [${URL}]: " U
+  read -e -p "Enter the public URLv4 to this LG (including http://) [${URLV4}]: " -i "$URLV4" UV4
+  read -e -p "Enter the public URLv6 to this LG (including http://) [${URLV6}]: " -i "$URLV6" UV6
   read -e -p "Enter the servers location [${LOCATION}]: " LOC
   read -e -p "Enter the test IPv4 address [${IPV4}]: " -i "$IP4" IP4
   read -e -p "Enter the test IPv6 address [${IPV6}]: " -i "$IP6" IP6
@@ -269,6 +279,10 @@ function setup()
   if [[ -n $U ]]; then
     URL=$U
   fi
+  # Assign entered value to script variable, can be left blank
+  URLV4=$UV4
+  URLV6=$UV6
+
   # Rate limit
   if [[ "$RATE" = 'y' ]] || [[ "$RATE" = 'yes' ]]; then
     read -e -p "Enter the # of commands allowed per hour (per IP) [${RATELIMIT}]: " RATE
@@ -378,6 +392,8 @@ LOCATION=
 RATELIMIT=
 SITE=
 URL=
+URLV4=
+URLV6=
 TEST=()
 
 # Install required scripts

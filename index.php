@@ -58,7 +58,14 @@ if (file_exists('LookingGlass/Config.php')) {
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="panel panel-default">
-					<div class="panel-heading">Network information</div>
+					<div class="panel-heading">
+						Network information
+						<?php
+						if ( (!empty($siteUrlv4)) &&  (!empty($siteUrlv6)) ) {
+							echo "( <a href=\"".$siteUrl."\">DualStack</a> | <a href=\"".$siteUrlv4."\">Only IPv4</a> | <a href=\"".$siteUrlv6."\">Only IPv6</a> )";
+						}
+						?>
+					</div>
 					<div class="panel-body">
 						<p>Server Location: <strong><?php echo $serverLocation; ?></strong></p>
 						<p>IPv4 Address: <?php echo $ipv4; ?></p>
@@ -73,20 +80,25 @@ if (file_exists('LookingGlass/Config.php')) {
 					<div class="panel-body">
 						<h4>IPv4 Download Test</h4>
 						<?php
-							foreach ($testFiles as $val) 
-							{
-								echo "<a href=\"//{$ipv4}/{$val}.bin\" class=\"btn btn-xs btn-default\">{$val}</a> ";
+							foreach ($testFiles as $val) {
+								echo "<a href=\"";
+								if ( !empty($siteUrlv4)) { echo $siteUrlv4; }
+								else  { echo $siteUrl; }
+								echo "/{$val}.bin\" class=\"btn btn-xs btn-default\">{$val}</a> ";
 							}
 						?>
 
-						<?php if (!empty($ipv6)) 
+						<?php 
+						if (!empty($ipv6)) 
 							{
 								echo "<h4>IPv6 Download Test</h4>";
-								foreach ($testFiles as $val) 
-									{
-										echo "<a href=\"//[{$ipv6}]/{$val}.bin\" class=\"btn btn-xs btn-default\">{$val}</a> ";
-									}
-								} 
+								foreach ($testFiles as $val) {
+									echo "<a href=\"";
+									if ( !empty($siteUrlv6)) { echo $siteUrlv6; }
+									else  { echo $siteUrl; }
+									echo "/{$val}.bin\" class=\"btn btn-xs btn-default\">{$val}</a> ";
+								}
+							} 
 							?>
 					</div>
 				</div>
