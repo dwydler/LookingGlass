@@ -1,0 +1,100 @@
+# LOOKGIN GLASS.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Daniel Wydler <EMAIL@ADDRESS>, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-09-16 14:55+0200\n"
+"PO-Revision-Date: 2018-09-19 08:24+0200\n"
+"Last-Translator: Daniel Wydler <EMAIL@ADDRESS>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.1.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: index.php:51
+msgid "Network information"
+msgstr "Netzwerkinformationen"
+
+#: index.php:54
+msgid "DualStack"
+msgstr "DualStack"
+
+#: index.php:55
+msgid "Only IPv4"
+msgstr "Nur IPv4"
+
+#: index.php:56
+msgid "Only IPv6"
+msgstr "Nur IPv6"
+
+#: index.php:62
+msgid "Server Location"
+msgstr "Serverstandort"
+
+#: index.php:63
+msgid "IPv4 Address"
+msgstr "IPv4-Adresse"
+
+#: index.php:64
+msgid "IPv6 Address"
+msgstr "IPv6-Adresse"
+
+#: index.php:65
+msgid "Your IP Address"
+msgstr "Ihre IP-Adresse"
+
+#: index.php:71
+msgid "Network Test Files"
+msgstr "Netzwerk-Testdateien"
+
+#: index.php:73
+msgid "IPv4 Download Test"
+msgstr "IPv4-Download-Test"
+
+#: index.php:86
+msgid "IPv6 Download Test"
+msgstr "IPv6-Download-Test"
+
+#: index.php:106
+msgid "Network tests"
+msgstr "Netzwerktests"
+
+#: index.php:112
+msgid "Host or IP address"
+msgstr "Host- oder IP-Adresse"
+
+#: index.php:129
+msgid "Run Test"
+msgstr "Test starten"
+
+#: index.php:129
+msgid "Loading"
+msgstr "Wird geladen"
+
+#: index.php:141
+msgid "Results"
+msgstr "Ergebnisse"
+
+#: index.php:152
+msgid "Back to top"
+msgstr "Nach oben"
+
+#: index.php:167
+msgid "Powered by"
+msgstr "Entwickelt von"
+
+#: index.php:168
+msgid "Modified by"
+msgstr "Geändert durch"
+
+#: index.php:169
+msgid "Language"
+msgstr "Sprache"

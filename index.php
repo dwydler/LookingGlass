@@ -18,6 +18,19 @@ if (file_exists('LookingGlass/Config.php')) {
 } else {
   exit('Config.php does not exist. Please run configure.sh');
 }
+
+// include multi language sytem
+if ( (isset($_GET["lang"])) && (preg_match("/^[a-z]{2}\_[A-Z]{2}$/",$_GET["lang"])) ) {
+	$locale = $_GET["lang"];
+	setlocale(LC_MESSAGES, [$locale, $locale.".UTF-8"]);
+	bindtextdomain("messages", "./locale");
+	textdomain("messages");
+	bind_textdomain_codeset("messages", 'UTF-8');
+}
+else {
+	$locale = "en_US.UTF-8";
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,6 +45,12 @@ if (file_exists('LookingGlass/Config.php')) {
 
     <!-- Website title -->
     <title><?php echo $siteName; ?></title>
+
+	<script>
+	// Translation for JavaScript -->
+	RunTest = "<?php echo _("Run Test"); ?>"
+	Loading = "<?php echo _("Loading"); ?>"
+	</script>
 
     <!-- IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
@@ -49,7 +68,7 @@ if (file_exists('LookingGlass/Config.php')) {
 		<div class="row" id="header">
 			<div class="col-xs-12">
 				<div class="page-header">
-					<h1><a id="title" href="<?php echo $siteUrl; ?>"><?php echo $siteName; ?></a></h1>
+					<h1><a id="title" href="<?php echo $siteUrl; ?>?lang=<?php echo $locale;?>"><?php echo $siteName; ?></a></h1>
 				</div>
 			</div>
 		</div>
@@ -60,26 +79,29 @@ if (file_exists('LookingGlass/Config.php')) {
 			<div class="col-sm-6">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						Network information
 						<?php
+						echo _("Network information")." ";
+
 						if ( (!empty($siteUrlv4)) &&  (!empty($siteUrlv6)) ) {
-							echo "( <a href=\"".$siteUrl."\">DualStack</a> | <a href=\"".$siteUrlv4."\">Only IPv4</a> | <a href=\"".$siteUrlv6."\">Only IPv6</a> )";
+							echo "( <a href=\"".$siteUrl."?lang=".$locale."\">"._("DualStack")."</a> | 
+								<a href=\"".$siteUrlv4."?lang=".$locale."\">"._("Only IPv4")."</a> |
+								<a href=\"".$siteUrlv6."?lang=".$locale."\">"._("Only IPv6")."</a> )";
 						}
 						?>
 					</div>
 					<div class="panel-body">
-						<p>Server Location: <strong><?php echo $serverLocation; ?></strong></p>
-						<p>IPv4 Address: <?php echo $ipv4; ?></p>
-						<?php if (!empty($ipv6)) { echo '<p>IPv6 Address: '; echo $ipv6; echo '</p>'; } ?>
-						<p>Your IP Address: <strong><a href="#tests" id="userip"><?php echo $_SERVER['REMOTE_ADDR']; ?></a></strong></p>
+						<p><?php echo _("Server Location"); ?>: <strong><?php echo $serverLocation; ?></strong></p>
+						<p><?php echo _("IPv4 Address").": ".$ipv4; ?></p>
+						<?php if (!empty($ipv6)) { echo "<p>"._("IPv6 Address").": ".$ipv6."</p>"; } ?>
+						<p><?php echo _("Your IP Address"); ?>: <strong><a href="#tests" id="userip"><?php echo $_SERVER['REMOTE_ADDR']; ?></a></strong></p>	
 					</div>
 				</div>
 			</div>
 			<div class="col-sm-6">
 				<div class="panel panel-default">
-					<div class="panel-heading">Network Test Files</div>
+				<div class="panel-heading"><?php echo _("Network Test Files"); ?></div>
 					<div class="panel-body">
-						<h4>IPv4 Download Test</h4>
+						<h4><?php echo _("IPv4 Download Test"); ?></h4>
 						<?php
 							foreach ($testFiles as $val) {
 								echo "<a href=\"";
@@ -90,9 +112,8 @@ if (file_exists('LookingGlass/Config.php')) {
 						?>
 
 						<?php 
-						if (!empty($ipv6)) 
-							{
-								echo "<h4>IPv6 Download Test</h4>";
+						if (!empty($ipv6)) {
+								echo "<h4>"._("IPv6 Download Test")."</h4>";
 								foreach ($testFiles as $val) {
 									echo "<a href=\"";
 									if ( !empty($siteUrlv6)) { echo $siteUrlv6; }
@@ -111,12 +132,12 @@ if (file_exists('LookingGlass/Config.php')) {
 		<div class="row">
 			<div class="col-xs-12">
 				<div class="panel panel-default">
-					<div class="panel-heading">Network tests</div>
+					<div class="panel-heading"><?php echo _("Network tests"); ?></div>
 					<div class="panel-body">
 						<form class="form-inline" id="networktest" action="#results" method="post">
 							<div id="hosterror" class="form-group">
 								<div class="controls">
-									<input id="host" name="host" type="text" class="form-control" placeholder="Host or IP address">
+								<input id="host" name="host" type="text" class="form-control" placeholder="<?php echo _("Host or IP address"); ?>">
 								</div>
 							</div>
 							<div class="form-group">
@@ -131,7 +152,7 @@ if (file_exists('LookingGlass/Config.php')) {
 								</select>
 							</div>
 
-							<button type="submit" id="submit" name="submit" class="btn btn-success">Run Test</button>
+							<button type="submit" id="submit" name="submit" class="btn btn-success"><?php echo _("Run Test"); ?></button>
 						</form>
 					</div>
 				</div>
@@ -143,7 +164,7 @@ if (file_exists('LookingGlass/Config.php')) {
 		<div class="row" id="results" style="display:none">
 			<div class="col-xs-12">
 				<div class="panel panel-default">
-					<div class="panel-heading">Results</div>
+					<div class="panel-heading"><?php echo _("Results"); ?></div>
 					<div class="panel-body">
 						<pre id="response" style="display:none"></pre>
 					</div>
@@ -155,10 +176,14 @@ if (file_exists('LookingGlass/Config.php')) {
       	<!-- Footer -->
       	<footer class="footer">
 			<p class="pull-right">
-				<a href="#">Back to top</a>
+				<a href="#"><?php echo _("Back to top"); ?></a>
         	</p>
 
-        	<p>Powered by <a target="_blank" href="http://github.com/telephone/LookingGlass">LookingGlass</a> | Modified by <a target="_blank" href="https://github.com/dwydler/LookingGlass">Daniel Wydler</a></p>
+			<p>
+				<?php echo _("Powered by").": "; ?><a target="_blank" href="http://github.com/telephone/LookingGlass">LookingGlass</a> | 
+				<?php echo _("Modified by").": "; ?><a target="_blank" href="https://github.com/dwydler/LookingGlass">Daniel Wydler</a> | 
+				<?php echo _("Language").": "; ?> <a href="?lang=en_US">EN</a> <a href="?lang=de_DE">DE</a>
+			</p>
       	</footer>
 		<!-- /Footer -->
 

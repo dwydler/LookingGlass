@@ -18,7 +18,7 @@ $(document).ready(function() {
     // submit form
     else {
       // disable submit button + blank response
-      $('#submit').attr('disabled', 'true').text('Loading...');
+      $('#submit').attr('disabled', 'true').text(Loading);
       $('#response').html();
 
       // call async request
@@ -30,7 +30,7 @@ $(document).ready(function() {
         // on completion
         if (xhr.readyState == XMLHttpRequest.DONE) {
             window.clearTimeout(timer);
-            $('#submit').removeAttr('disabled').text('Run Test');
+            $('#submit').removeAttr('disabled').text(RunTest);
         }
 
         // show/hide results
