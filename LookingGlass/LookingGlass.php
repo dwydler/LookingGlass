@@ -83,7 +83,7 @@ class LookingGlass
     public function ping($host, $count = 4)
     {
         if ($host = $this->validate($host)) {
-            return $this->procExecute('ping -c' . $count . ' -w15', $host);
+            return $this->procExecute('ping -4 -c' . $count . ' -w15', $host);
         }
         return false;
     }
