@@ -241,8 +241,8 @@ function setup()
   sleep 1
 
   # Local vars
-  local IP4=
-  local IP6=
+  local IP4=$(ifconfig | sed -n '2 p' | awk '{print $2}')
+  local IP6=$(ifconfig | sed -n '3 p' | awk '{print $2}')
   local LOC=
   local S=
   local T=
@@ -252,8 +252,8 @@ function setup()
   read -e -p "Enter your website name (Header/Logo) [${SITE}]: " S
   read -e -p "Enter the public URL to this LG (including http://) [${URL}]: " U
   read -e -p "Enter the servers location [${LOCATION}]: " LOC
-  read -e -p "Enter the test IPv4 address [${IPV4}]: " IP4
-  read -e -p "Enter the test IPv6 address (Re-enter everytime this script is run) [${IPV6}]: " IP6
+  read -e -p "Enter the test IPv4 address [${IPV4}]: " -i "$IP4" IP4
+  read -e -p "Enter the test IPv6 address [${IPV6}]: " -i "$IP6" IP6
   read -e -p "Enter the size of test files in MB (Example: 25MB 50MB 100MB) [${TEST[*]}]: " T
   read -e -p "Do you wish to enable rate limiting of network commands? (y/n): " RATE
 
