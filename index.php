@@ -24,6 +24,11 @@ if( !function_exists("proc_open") ) {
 	exit('The PHP function proc_open is not usable. Please modify your php.ini.');
 }
 
+// check if php function proc_get_status is usable
+if( !function_exists("proc_get_status") ) {
+	exit('The PHP function proc_get_status is not usable. Please modify your php.ini.');
+}
+
 // lazy config check/load
 if (file_exists('LookingGlass/Config.php')) {
   require 'LookingGlass/Config.php';
