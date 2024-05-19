@@ -143,6 +143,7 @@ else {
 							<div class="form-group">
 								<select name="cmd" class="form-control">
 									<option value="host">host</option>
+									<?php if (!empty($ipv6)) { echo '<option value="host">host6</option>'; } ?>
                   					<option value="mtr">mtr</option>
                   					<?php if (!empty($ipv6)) { echo '<option value="mtr6">mtr6</option>'; } ?>
                   					<option value="ping" selected="selected">ping</option>
