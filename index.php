@@ -9,6 +9,11 @@
  * @license     http://opensource.org/licenses/MIT MIT License
  */
 
+// check php version
+if (version_compare(phpversion(), '8.0', '<')) {
+	exit('This PHP Version '.phpversion().' is not supportet.');
+}
+
 // lazy config check/load
 if (file_exists('LookingGlass/Config.php')) {
   require 'LookingGlass/Config.php';
