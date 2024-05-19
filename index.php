@@ -14,6 +14,11 @@ if (version_compare(phpversion(), '8.0', '<')) {
 	exit('This PHP Version '.phpversion().' is not supportet.');
 }
 
+// check if php pdo for sqlite installed on the server
+if( !in_array("sqlite", PDO::getAvailableDrivers()) ) {
+	exit('PDO driver for SQLite is not installed on this system (e.g. apt install php-sqlite3).');
+}
+
 // lazy config check/load
 if (file_exists('LookingGlass/Config.php')) {
   require 'LookingGlass/Config.php';
