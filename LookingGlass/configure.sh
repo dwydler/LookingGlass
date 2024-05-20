@@ -34,20 +34,43 @@ function createConfig()
 
 // IPv4 address
 \$ipv4 = '${IPV4}';
+
 // IPv6 address (can be blank)
 \$ipv6 = '${IPV6}';
+
 // Rate limit
 \$rateLimit = (int) '${RATELIMIT}';
+
 // Site name (header)
 \$siteName = '${SITE}';
+
 // Site URL
 \$siteUrl = '${URL}';
+
 // Site URLv4
 \$siteUrlv4 = '${URLV4}';
+
 // Site URLv6
 \$siteUrlv6 = '${URLV6}';
+
 // Server location
 \$serverLocation = '${LOCATION}';
+
+// HOST
+\$host = '${HOST}';
+
+// MTR
+\$mtr = '${MTR}';
+
+// PING
+\$ping = '${PING}';
+
+// TRACEROUTE
+\$traceroute = '${TRACEROUTE}';
+
+// SQLITE3
+\$sqlite3 = '${SQLITE3}';
+
 // Test files
 \$testFiles = array();
 EOF
@@ -164,6 +187,15 @@ EOF
 }
 
 ##
+#
+##
+
+function StopScript() {
+  echo 'Installation stopped :('
+  echo
+  exit
+}
+##
 # Check and install script requirements
 ##
 function requirements()
@@ -189,53 +221,69 @@ function requirements()
 
 ##### IMPORTANT #####
 Unknown Operating system. Install dependencies manually:
-host mtr iputils-ping traceroute sqlite3
-#####################
+net-tools host mtr iputils-ping traceroute sqlite3
+
 EOF
-    return
+    StopScript
+
   fi
 
-  # Array of required functions
-  local REQUIRE=(host mtr iputils-ping traceroute sqlite3)
+  # command ifconfig
+  echo 'Checking for ifconfig...'
+  if [ ! -f "/sbin/ifconfig" ] && [ ! -f "/bin/ifconfig" ] ; then
+    echo "Please install: ${INSTALL} -y install net-tools."
+    StopScript
+  fi
 
-  # Loop through required & install
-  for i in "${REQUIRE[@]}"; do
-    # Fix host for CentOS
-    if [ $i = 'host' ]; then
-      echo 'Checking for host...'
-      if [ ! -f "/usr/bin/$i" ]; then
-        if [ $INSTALL = 'yum' ]; then
-          ${INSTALL} -y install "bind-utils"
-        else
-          ${INSTALL} -y install ${i}
-        fi
-        echo
-      fi
-    # Fix ping
-    elif [ $i = 'iputils-ping' ]; then
-      echo 'Checking for ping...'
-      if [ ! -f "/bin/ping" ]; then
-        ${INSTALL} -y install ${i}
-        echo
-      fi
-    # Check both bin and sbin
-    elif [ $i = 'traceroute' ]; then
-      echo "Checking for $i..."
-      if [ ! -f "/usr/bin/$i" ]; then
-        if [ ! -f "/usr/sbin/$i" ]; then
-          ${INSTALL} -y install ${i}
-          echo
-        fi
-      fi
+  # command host
+  echo 'Checking for host...'
+  if [ ! -f "/usr/bin/host" ]; then
+    HOST='NULL'
+
+    if [ $INSTALL = 'yum' ]; then
+      echo "Please install: ${INSTALL} -y install bind-utils."
     else
-      echo "Checking for $i..."
-      if [ ! -f "/usr/bin/$i" ]; then
-        ${INSTALL} -y install ${i}
-        echo
-      fi
+      echo "Please install: ${INSTALL} -y install host."
     fi
-    sleep 1
-  done
+    echo
+  fi  
+
+  # command mtr
+  echo 'Checking for mtr...'
+  if [ ! -f "/usr/bin/mtr" ] && [ ! -f "/usr/sbin/mtr" ] ; then
+    MTR='NULL'
+    echo "Please install: ${INSTALL} -y install mtr."
+    echo
+  fi
+
+  # command ping
+  echo 'Checking for ping...'
+  if [ ! -f "/bin/ping" ]; then
+    PING='NULL'
+    echo "Please install: ${INSTALL} -y install iputils-ping."
+    echo
+  fi
+
+  # command traceroute
+  echo 'Checking for traceroute...'
+  if [ ! -f "/usr/bin/traceroute" ] && [ ! -f "/usr/sbin/traceroute" ]; then
+    TRACEROUTE='NULL'
+    echo "Please install: ${INSTALL} -y install traceroute."
+    echo
+  fi
+
+  # command sqlite3
+  echo 'Checking for sqlite3...'
+  if [ ! -f "/usr/bin/sqlite3" ]; then
+    SQLITE3='NULL'
+
+    if [ "$INSTALL" = "yum" ]; then
+      echo "Please install: ${INSTALL} -y install sqlite-devel."
+    else
+      echo "Please install: ${INSTALL} -y install sqlite3."
+    fi
+    echo
+  fi
 }
 
 ##
@@ -262,7 +310,20 @@ function setup()
   read -e -p "Enter the test IPv4 address [${IPV4}]: " -i "$IP4" IP4
   read -e -p "Enter the test IPv6 address [${IPV6}]: " -i "$IP6" IP6
   read -e -p "Enter the size of test files in MB (Example: 25MB 50MB 100MB) [${TEST[*]}]: " T
-  read -e -p "Do you wish to enable rate limiting of network commands? (y/n): " RATE
+
+  if [ -z $SQLITE3 ]; then
+    # Set default value
+    YESNO="y"
+
+    # Check if perviously set an rate limit
+    if [ -z "$RATELIMIT" ]; then
+      YESNO="n"  
+    elif [ $RATELIMIT -eq "0" ]; then
+      YESNO="n"
+    fi
+                
+    read -e -p "Do you wish to enable rate limiting of network commands? (y/n): " -i "$YESNO" RATE
+  fi
 
   # Check local vars aren't empty; Set new values
   if [[ -n $IP4 ]]; then
@@ -294,6 +355,7 @@ function setup()
   else
     RATELIMIT=0
   fi
+
   # Create test files
   if [[ -n $T ]]; then
     echo
@@ -394,6 +456,11 @@ SITE=
 URL=
 URLV4=
 URLV6=
+HOST=
+MTR=
+PING=
+TRACEROUTE=
+SQLITE3=
 TEST=()
 
 # Install required scripts
@@ -422,8 +489,12 @@ echo
 # Create Config.php file
 echo 'Creating Config.php...'
 createConfig
+
 # Create DB
-database
+if [ -z $SQLITE3 ]; then
+  database
+fi
+
 # Check for RHEL mtr
 if [ "$INSTALL" = 'yum' ]; then
   mtrFix

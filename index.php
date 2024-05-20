@@ -14,11 +14,6 @@ if (version_compare(phpversion(), '8.0', '<')) {
 	exit('This PHP Version '.phpversion().' is not supportet.');
 }
 
-// check if php pdo for sqlite installed on the server
-if( !in_array("sqlite", PDO::getAvailableDrivers()) ) {
-	exit('PDO driver for SQLite is not installed on this system (e.g. apt install php-sqlite3).');
-}
-
 // check if php function proc_open is usable
 if( !function_exists("proc_open") ) {
 	exit('The PHP function proc_open is not usable. Please modify your php.ini.');
@@ -32,11 +27,17 @@ if( !function_exists("proc_get_status") ) {
 // lazy config check/load
 if (file_exists('LookingGlass/Config.php')) {
   require 'LookingGlass/Config.php';
-  if (!isset($ipv4, $ipv6, $siteName, $siteUrl, $serverLocation, $testFiles)) {
+
+  if (!isset($siteName, $siteUrl, $serverLocation, $testFiles)) {
     exit('Configuration variable/s missing. Please run configure.sh');
   }
 } else {
   exit('Config.php does not exist. Please run configure.sh');
+}
+
+// check if php pdo for sqlite installed on the server
+if( (!in_array("sqlite", PDO::getAvailableDrivers())) and (empty($sqlite3)) ) {
+	exit('PDO driver for SQLite is not installed on this system (e.g. apt install php-sqlite3).');
 }
 
 // include multi language sytem
@@ -162,14 +163,15 @@ else {
 							</div>
 							<div class="form-group">
 								<select name="cmd" class="form-control">
-									<option value="host">host</option>
-									<?php if (!empty($ipv6)) { echo '<option value="host">host6</option>'; } ?>
-                  					<option value="mtr">mtr</option>
-                  					<?php if (!empty($ipv6)) { echo '<option value="mtr6">mtr6</option>'; } ?>
-                  					<option value="ping" selected="selected">ping</option>
-                  					<?php if (!empty($ipv6)) { echo '<option value="ping6">ping6</option>'; } ?>
-                  					<option value="traceroute">traceroute</option>
-                  					<?php if (!empty($ipv6)) { echo '<option value="traceroute6">traceroute6</option>'; } ?>
+									<?php
+									if ( ((!empty($ipv4)) or (!empty($ipv6))) and (empty($host)) ) { echo '<option value="host">host/host6</option>'; }
+									if ( (!empty($ipv4)) and (empty($mtr)) ) { echo '<option value="mtr">mtr</option>'; }
+									if ( (!empty($ipv6)) and (empty($mtr)) ) { echo '<option value="mtr6">mtr6</option>'; }
+									if ( (!empty($ipv4)) and (empty($ping)) ) { echo '<option value="ping" selected="selected">ping</option>'; }
+									if ( (!empty($ipv6)) and (empty($ping)) ) { echo '<option value="ping6">ping6</option>'; }
+									if ( (!empty($ipv4)) and (empty($traceroute)) ) { echo '<option value="traceroute">traceroute</option>'; }
+									if ( (!empty($ipv6)) and (empty($traceroute)) ) { echo '<option value="traceroute6">traceroute6</option>'; }
+									?>
 								</select>
 							</div>
 
