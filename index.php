@@ -97,7 +97,7 @@ if ( !isset ($_SESSION["theme"])) {
 	</script>
 
     <!-- Styles -->
-    <link href="assets/css/bootstrap-5.3.2.min.css" rel="stylesheet" integrity="sha384-5RjDXay9Wn4NYmyOvwYyF3Rf++LPBPLQOjEIgmIIIIxykRXMvdmneG3RPXVwEaSe" crossorigin="anonymous">
+    <link href="assets/css/bootstrap-5.3.3.min.css" rel="stylesheet" integrity="sha384-iyVHgWdgbOYA1Qxlw7jRhcp52l0uPEs4zrd0MRrcr1fDCFRPyz0k1VrxB1urC55B" crossorigin="anonymous">
   </head>
   <body>
 	<!-- Container -->
