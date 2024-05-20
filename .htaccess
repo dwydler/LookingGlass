@@ -16,6 +16,9 @@
 
         # The X-Content-Type-Options header with the value nosniff ensures that user agents do not attempt to guess the format of the data being received.
 	Header set X-Content-Type-Options "nosniff"
+
+        # Stop page from loading when they detected reflected cross-site scripting (XSS) attacks.
+	Header set X-XSS-Protection "1; mode=block"
 </IfModule>
 
 # Disable directory indexing
