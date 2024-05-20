@@ -21,100 +21,92 @@ msgstr ""
 
 #: index.php:51
 msgid "Network information"
-msgstr "Netzwerkinformationen"
+msgstr ""
 
 #: index.php:54
 msgid "DualStack"
-msgstr "DualStack"
+msgstr ""
 
 #: index.php:55
 msgid "Only IPv4"
-msgstr "Nur IPv4"
+msgstr ""
 
 #: index.php:56
 msgid "Only IPv6"
-msgstr "Nur IPv6"
+msgstr ""
 
 #: index.php:62
 msgid "Server Location"
-msgstr "Serverstandort"
+msgstr ""
 
 #: index.php:63
 msgid "IPv4 Address"
-msgstr "IPv4-Adresse"
+msgstr ""
 
 #: index.php:64
 msgid "IPv6 Address"
-msgstr "IPv6-Adresse"
+msgstr ""
 
 #: index.php:65
 msgid "Your IP Address"
-msgstr "Ihre IP-Adresse"
+msgstr ""
 
 #: index.php:71
 msgid "Network Test Files"
-msgstr "Netzwerk-Testdateien"
+msgstr ""
 
 #: index.php:73
 msgid "IPv4 Download Test"
-msgstr "IPv4-Download-Test"
+msgstr ""
 
 #: index.php:86
 msgid "IPv6 Download Test"
-msgstr "IPv6-Download-Test"
+msgstr ""
 
 #: index.php:106
 msgid "Network tests"
-msgstr "Netzwerktests"
+msgstr ""
 
 #: index.php:112
 msgid "Host or IP address"
-msgstr "Host- oder IP-Adresse"
+msgstr ""
 
 #: index.php:129
 msgid "Run Test"
-msgstr "Test starten"
-
-#: index.php:129
-msgid "Loading"
-msgstr "Wird geladen"
+msgstr ""
 
 #: index.php:141
 msgid "Results"
-msgstr "Ergebnisse"
+msgstr ""
 
 #: index.php:152
 msgid "Back to top"
-msgstr "Nach oben"
+msgstr ""
 
-#: index.php:167
+#: index.php:154
 msgid "Powered by"
-msgstr "Entwickelt von"
+msgstr ""
 
-#: index.php:168
+#: index.php:154
 msgid "Modified by"
-msgstr "Geändert durch"
-
-#: index.php:169
-msgid "Language"
-msgstr "Sprache"
+msgstr ""
 
 #: index.php
 msgid "Privacy"
-msgstr "Datenschutz"
+msgstr ""
 
 #: index.php
 msgid "Imprint"
-msgstr "Impressum"
+msgstr ""
 
 #: index.php
 msgid "Iperf Informations"
-msgstr "Iperf Informationen"
+msgstr ""
 
 #: index.php
 msgid "Iperf is not configured"
-msgstr "Iperf ist auf diesem Server nicht konfiguriert"
+msgstr "Iperf is not configured on this server"
 
 #: index.php
 msgid "Iperf Help"
-msgstr "Hilfe"
+msgstr "Help"

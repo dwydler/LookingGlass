@@ -68,6 +68,9 @@ function createConfig()
 // TRACEROUTE
 \$traceroute = '${TRACEROUTE}';
 
+// IPERF3
+\$iperf3 = '${IPERF3}';
+
 // SQLITE3
 \$sqlite3 = '${SQLITE3}';
 
@@ -76,6 +79,9 @@ function createConfig()
 
 // Imprint Url
 \$imprinturl = '${IMPRINTURL}';
+
+// Iperf Port
+\$iperfport = '${IPERFPORT}';
 
 // Test files
 \$testFiles = array();
@@ -130,6 +136,8 @@ function config()
         PRIVACYURL=("$(echo $f2 | awk -F\' '{print $(NF-1)}')")
       elif [ $f1 = '$imprinturl' ]; then
         IMPRINTURL=("$(echo $f2 | awk -F\' '{print $(NF-1)}')")
+      elif [ $f1 = '$iperfport' ]; then
+        IPERFPORT=("$(echo $f2 | awk -F\' '{print $(NF-1)}')")
       elif [ $f1 = '$testFiles[]' ]; then
         TEST+=("$(echo $f2 | awk -F\' '{print $(NF-1)}')")
       fi
@@ -294,6 +302,19 @@ EOF
     fi
     echo
   fi
+
+  # command iperf3
+  echo 'Checking for iperf3...'
+  if [ ! -f "/usr/bin/iperf3" ]; then
+    IPERF3='NULL'
+
+    if [ "$INSTALL" = "yum" ]; then
+      echo "Please install: ${INSTALL} -y install iperf3."
+    else
+      echo "Please install: ${INSTALL} -y install iperf3."
+    fi
+    echo
+  fi
 }
 
 ##
@@ -321,6 +342,11 @@ function setup()
   read -e -p "Enter the servers location [${LOCATION}]: " LOC
   read -e -p "Enter the test IPv4 address [${IPV4}]: " -i "$IP4" IP4
   read -e -p "Enter the test IPv6 address [${IPV6}]: " -i "$IP6" IP6
+
+  if [ -z "$IPERF3" ]; then
+    read -e -p "Enter the Port for the Ipref Server [${IPERFPORT}]: " -i "$IPERFPORT" IPP
+  fi
+
   read -e -p "Enter the size of test files in MB (Example: 25MB 50MB 100MB) [${TEST[*]}]: " T
 
   if [ -z $SQLITE3 ]; then
@@ -358,6 +384,7 @@ function setup()
   URLV6=$UV6
   PRIVACYURL=$PRIURL
   IMPRINTURL=$IMPURL
+  IPERFPORT=$IPP
 
   # Rate limit
   if [[ "$RATE" = 'y' ]] || [[ "$RATE" = 'yes' ]]; then
@@ -475,9 +502,11 @@ HOST=
 MTR=
 PING=
 TRACEROUTE=
+IPERF3=
 SQLITE3=
 PRIVACYURL=
 IMPRINTURL=
+IPERFPORT=
 TEST=()
 
 # Install required scripts

@@ -115,7 +115,7 @@ if ( !isset ($_SESSION["theme"])) {
 
 		<!-- Network Information -->
 		<div class="row">
-			<div class="col-md-6 mt-2 mb-3">
+			<div class="col-md-5 mt-2 mb-3">
 				<div class="card">
 					<div class="card-header">
 						<?php
@@ -136,7 +136,37 @@ if ( !isset ($_SESSION["theme"])) {
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6 mt-2 mb-3">
+
+			<div class="col-md-4 mt-2 mb-3">
+				<div class="card">
+					<div class="card-header">
+						<?php
+						echo _("Iperf Informations")."&nbsp;(<a href=\"https://iperf.fr/\" target=\"_blank\">"._("Iperf Help")."</a>)";
+						?>
+					</div>
+					<div class="card-body" style="height: 200px;">
+						<?php 
+						if (empty($iperf3) ) {
+							if (!empty($ipv4)) {
+								echo "<p><u>"._("IPv4")."</u><br>
+								iperf3.exe -c ".$ipv4." -p 5201 -P 4<br>
+								iperf3.exe -c ".$ipv4." -p 5201 -P 4 -R</p>";
+							}
+							if (!empty($ipv6)) {
+								echo "<p><u>"._("IPv6")."</u><br>
+								iperf3.exe -c ".$ipv6." -p 5201 -P 6<br>
+								iperf3.exe -c ".$ipv6." -p 5201 -P 6 -R</p>";
+							}
+						}
+						else {
+							echo "<p>"._("Iperf is not configured").".</p>";
+						} 
+						?>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-3 mt-2 mb-3">
 				<div class="card">
 					<div class="card-header"><?php echo _("Network Test Files"); ?></div>
 					<div class="card-body" style="height: 200px;">
