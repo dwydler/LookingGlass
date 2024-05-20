@@ -70,9 +70,14 @@ else {
 	$locale = "en_US.UTF-8";
 }
 
+// Choose the defined theme
+if ( !isset ($_SESSION["theme"])) {
+	$_SESSION["theme"] = "light";
+}
+
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="<?php echo $_SESSION["theme"]; ?>">
   <head>
 
 	<!-- General settings -->
@@ -242,6 +247,14 @@ else {
 				}
 				?>
 				<div class="col">
+				</div>
+				<div class="col col-lg-auto">
+					<div class="d-inline-block">Darkmode:</div>
+					<div class="form-check form-switch d-inline-block">
+						<input class="form-check-input" type="checkbox" id="lightSwitch" style="cursor: pointer;"
+						<?php if ($_SESSION["theme"] == "dark") { echo "checked"; } ?>>
+						<label for="lightSwitch" class="form-check-label">On</label>
+					</div>
 				</div>
 				<div class="col col-lg-1 text-end">
 					<a href="#"><?php echo _("Back to top"); ?></a>
