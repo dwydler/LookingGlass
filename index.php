@@ -96,11 +96,6 @@ if ( !isset ($_SESSION["theme"])) {
 	Loading = "<?php echo _("Loading"); ?>"
 	</script>
 
-    <!-- IE6-8 support of HTML elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
     <!-- Styles -->
     <link href="assets/css/bootstrap-5.3.2.min.css" rel="stylesheet">
   </head>
