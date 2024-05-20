@@ -294,6 +294,6 @@ if ( !isset ($_SESSION["theme"])) {
     <!-- Javascript -->
     <script src="assets/js/jquery-3.7.1.min.js" integrity="sha384-apfJm2DWye6itJXDari7QfgbBXzkNeRsr1xgTfEH0SCvYV+NlzqP+MkX/LHMZIPI" crossorigin="anonymous"></script>
     <script src="assets/js/LookingGlass.min.js" integrity="sha384-Tbgm/vXUm6Le/ApkQDxgXBuafP9YrqDbN4yBnmqHJTm0faV4XSXnRnAASanqOwxI" crossorigin="anonymous"></script>
-    <script src="assets/js/XMLHttpRequest.min.js"></script>
+	<script src="assets/js/XMLHttpRequest.min.js" integrity="sha384-AaUK7ss8NSkclbHjauecZLxIH0t/QJxHmEUEbWIg1QSlBYMjD6o52TJp0kOtDsef" crossorigin="anonymous"></script>
   </body>
 </html>
