@@ -97,7 +97,7 @@ else {
     <![endif]-->
 
     <!-- Styles -->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/bootstrap-5.3.2.min.css" rel="stylesheet">
   </head>
   <body>
 	<!-- Container -->
@@ -105,8 +105,8 @@ else {
 
 		<!-- Header -->
 		<div class="row" id="header">
-			<div class="col-xs-12">
-				<div class="page-header">
+			<div class="col-12">
+				<div class="page-header pb-2 mt-4 mb-2 border-bottom">
 					<h1><a id="title" href="<?php echo $siteUrl; ?>?lang=<?php echo $locale;?>"><?php echo $siteName; ?></a></h1>
 				</div>
 			</div>
@@ -115,9 +115,9 @@ else {
 
 		<!-- Network Information -->
 		<div class="row">
-			<div class="col-sm-6">
-				<div class="panel panel-default">
-					<div class="panel-heading">
+			<div class="col-md-6 mt-2 mb-3">
+				<div class="card">
+					<div class="card-header">
 						<?php
 						echo _("Network information")." ";
 
@@ -128,7 +128,7 @@ else {
 						}
 						?>
 					</div>
-					<div class="panel-body">
+					<div class="card-body" style="height: 200px;">
 						<p><?php echo _("Server Location"); ?>: <strong><?php echo $serverLocation; ?></strong></p>
 						<p><?php echo _("IPv4 Address").": ".$ipv4; ?></p>
 						<?php if (!empty($ipv6)) { echo "<p>"._("IPv6 Address").": ".$ipv6."</p>"; } ?>
@@ -136,31 +136,29 @@ else {
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-6">
-				<div class="panel panel-default">
-				<div class="panel-heading"><?php echo _("Network Test Files"); ?></div>
-					<div class="panel-body">
+			<div class="col-md-6 mt-2 mb-3">
+				<div class="card">
+					<div class="card-header"><?php echo _("Network Test Files"); ?></div>
+					<div class="card-body" style="height: 200px;">
 						<h4><?php echo _("IPv4 Download Test"); ?></h4>
 						<?php
+						foreach ($testFiles as $val) {
+							echo "<a href=\"";
+							if ( !empty($siteUrlv4)) { echo $siteUrlv4; }
+							else  { echo $siteUrl; }
+							echo "/{$val}.bin\" class=\"btn btn-xs btn-secondary\">{$val}</a> ";
+						}
+	
+						if (!empty($ipv6)) {
+							echo "<h4>"._("IPv6 Download Test")."</h4>";
 							foreach ($testFiles as $val) {
 								echo "<a href=\"";
-								if ( !empty($siteUrlv4)) { echo $siteUrlv4; }
+								if ( !empty($siteUrlv6)) { echo $siteUrlv6; }
 								else  { echo $siteUrl; }
-								echo "/{$val}.bin\" class=\"btn btn-xs btn-default\">{$val}</a> ";
+								echo "/{$val}.bin\" class=\"btn btn-xs btn-secondary\">{$val}</a> ";
 							}
+						} 
 						?>
-
-						<?php 
-						if (!empty($ipv6)) {
-								echo "<h4>"._("IPv6 Download Test")."</h4>";
-								foreach ($testFiles as $val) {
-									echo "<a href=\"";
-									if ( !empty($siteUrlv6)) { echo $siteUrlv6; }
-									else  { echo $siteUrl; }
-									echo "/{$val}.bin\" class=\"btn btn-xs btn-default\">{$val}</a> ";
-								}
-							} 
-							?>
 					</div>
 				</div>
 			</div>
@@ -169,32 +167,36 @@ else {
 
 		<!-- Network Tests -->
 		<div class="row">
-			<div class="col-xs-12">
-				<div class="panel panel-default">
-					<div class="panel-heading"><?php echo _("Network tests"); ?></div>
-					<div class="panel-body">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header"><?php echo _("Network tests"); ?></div>
+					<div class="card-body">
 						<form class="form-inline" id="networktest" action="#results" method="post">
-							<div id="hosterror" class="form-group">
-								<div class="controls">
-								<input id="host" name="host" type="text" class="form-control" placeholder="<?php echo _("Host or IP address"); ?>">
+							<div class="row">
+								<div id="hosterror" class="form-group col">
+									<div class="controls">
+										<input id="host" name="host" type="text" class="form-control" placeholder="<?php echo _("Host or IP address"); ?>">
+									</div>
+								</div>
+								<div class="form-group mr-1 col">
+									<select name="cmd" class="form-select">
+										<?php
+										if ( ((!empty($ipv4)) or (!empty($ipv6))) and (empty($host)) ) { echo '<option value="host">host/host6</option>'; }
+										if ( (!empty($ipv4)) and (empty($mtr)) ) { echo '<option value="mtr">mtr</option>'; }
+										if ( (!empty($ipv6)) and (empty($mtr)) ) { echo '<option value="mtr6">mtr6</option>'; }
+										if ( (!empty($ipv4)) and (empty($ping)) ) { echo '<option value="ping" selected="selected">ping</option>'; }
+										if ( (!empty($ipv6)) and (empty($ping)) ) { echo '<option value="ping6">ping6</option>'; }
+										if ( (!empty($ipv4)) and (empty($traceroute)) ) { echo '<option value="traceroute">traceroute</option>'; }
+										if ( (!empty($ipv6)) and (empty($traceroute)) ) { echo '<option value="traceroute6">traceroute6</option>'; }
+										?>
+									</select>
+								</div>
+							
+								<input type="hidden" name="csrf" value="<?php echo $_SESSION["csrf"]; ?>">
+								<div class="col">
+									<button type="submit" id="submit" name="submit" class="btn btn-success"><?php echo _("Run Test"); ?></button>
 								</div>
 							</div>
-							<div class="form-group">
-								<select name="cmd" class="form-control">
-									<?php
-									if ( ((!empty($ipv4)) or (!empty($ipv6))) and (empty($host)) ) { echo '<option value="host">host/host6</option>'; }
-									if ( (!empty($ipv4)) and (empty($mtr)) ) { echo '<option value="mtr">mtr</option>'; }
-									if ( (!empty($ipv6)) and (empty($mtr)) ) { echo '<option value="mtr6">mtr6</option>'; }
-									if ( (!empty($ipv4)) and (empty($ping)) ) { echo '<option value="ping" selected="selected">ping</option>'; }
-									if ( (!empty($ipv6)) and (empty($ping)) ) { echo '<option value="ping6">ping6</option>'; }
-									if ( (!empty($ipv4)) and (empty($traceroute)) ) { echo '<option value="traceroute">traceroute</option>'; }
-									if ( (!empty($ipv6)) and (empty($traceroute)) ) { echo '<option value="traceroute6">traceroute6</option>'; }
-									?>
-								</select>
-							</div>
-							
-							<input type="hidden" name="csrf" value="<?php echo $_SESSION["csrf"]; ?>">
-							<button type="submit" id="submit" name="submit" class="btn btn-success"><?php echo _("Run Test"); ?></button>
 						</form>
 					</div>
 				</div>
@@ -204,10 +206,10 @@ else {
 
 		<!-- Results -->
 		<div class="row" id="results" style="display:none">
-			<div class="col-xs-12">
-				<div class="panel panel-default">
-					<div class="panel-heading"><?php echo _("Results"); ?></div>
-					<div class="panel-body">
+			<div class="col-12">
+				<div class="card mt-3">
+					<div class="card-header"><?php echo _("Results"); ?></div>
+					<div class="card-body">
 						<pre id="response" style="display:none"></pre>
 					</div>
 				</div>
@@ -216,16 +218,23 @@ else {
 		<!-- /Results -->
 
       	<!-- Footer -->
-      	<footer class="footer">
-			<p class="pull-right">
-				<a href="#"><?php echo _("Back to top"); ?></a>
-        	</p>
-
-			<p>
-				<?php echo _("Powered by").": "; ?><a target="_blank" href="http://github.com/telephone/LookingGlass">LookingGlass</a> | 
-				<?php echo _("Modified by").": "; ?><a target="_blank" href="https://github.com/dwydler/LookingGlass">Daniel Wydler</a> | 
-				<?php echo _("Language").": "; ?> <a href="?lang=en_US">EN</a> <a href="?lang=de_DE">DE</a>
-			</p>
+      	<footer class="footer mt-2 mb-2">
+			<div class="row">
+				<div class="col col-lg-auto me-0 pe-0">
+					<?php echo _("Powered by").": "; ?><a target="_blank" href="https://github.com/telephone/LookingGlass">LookingGlass</a>&nbsp;|&nbsp;
+				</div>
+				<div class="col col-lg-auto mx-0 px-0">
+					<?php echo _("Modified by").": "; ?><a target="_blank" href="https://github.com/dwydler/LookingGlass">Daniel Wydler</a>&nbsp;|&nbsp;
+				</div>
+				<div class="col col-lg-auto mx-0 px-0">
+					<?php echo _("Language").": "; ?> <a href="?lang=en_US">EN</a> <a href="?lang=de_DE">DE</a>
+				</div>
+				<div class="col">
+				</div>
+				<div class="col col-lg-1 text-end">
+					<a href="#"><?php echo _("Back to top"); ?></a>
+				</div>
+			</div>
       	</footer>
 		<!-- /Footer -->
 
