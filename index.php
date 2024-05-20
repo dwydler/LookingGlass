@@ -229,6 +229,18 @@ else {
 				<div class="col col-lg-auto mx-0 px-0">
 					<?php echo _("Language").": "; ?> <a href="?lang=en_US">EN</a> <a href="?lang=de_DE">DE</a>
 				</div>
+				<?php
+				if (!empty($privacyurl)) {
+					echo "<div class=\"col col-lg-auto mx-0 px-0\">";
+					echo "&nbsp;|&nbsp;<a href=\"".$privacyurl."\" target=\"_blank\">"._("Privacy")."</a> ";
+					echo "</div>";
+				}
+				if (!empty($imprinturl)) {
+					echo "<div class=\"col col-lg-auto mx-0 px-0\">";
+					echo "&nbsp;|&nbsp;<a href=\"".$imprinturl."\" target=\"_blank\">"._("Imprint")."</a>";
+					echo "</div>";
+				}
+				?>
 				<div class="col">
 				</div>
 				<div class="col col-lg-1 text-end">

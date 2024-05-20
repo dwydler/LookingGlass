@@ -98,3 +98,11 @@ msgstr "Geändert durch"
 #: index.php:169
 msgid "Language"
 msgstr "Sprache"
+
+#: index.php
+msgid "Privacy"
+msgstr "Datenschutz"
+
+#: index.php
+msgid "Imprint"
+msgstr "Impressum"
