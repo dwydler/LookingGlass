@@ -86,4 +86,18 @@ class RateLimit
         $dbh = null;
         return true;
     }
+    
+    /**
+     * Check errror code of sql execution
+     *
+     * @param  array $error
+     *   Array of errorCode und ErrorInfo
+     * @return boolean
+     *   True on success
+     */
+	private function ErrorMessage ($error) {
+
+		$errors = $error->errorInfo();
+        exit("SQLITE - Error Code: ".$errors[1]."; Message: ".$errors[2]);
+	}
 }
