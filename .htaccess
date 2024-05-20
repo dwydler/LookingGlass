@@ -10,6 +10,9 @@
 
         # The Set-Cookie HTTP response header is used to send a cookie from the server to the user agent, so that the user agent can send it back to the server later. 
 	Header always edit Set-Cookie (.*) "$1; HTTPOnly; Secure; SameSite=Strict"
+
+        # The Access-Control-Allow-Origin response header indicates whether the response can be shared with requesting code from the given origin.
+	Header set Access-Control-Allow-Origin "none"
 </IfModule>
 
 # Disable directory indexing
