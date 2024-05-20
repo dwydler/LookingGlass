@@ -35,20 +35,26 @@ class RateLimit
          * if nonexistent, no rate limit is applied
          */
         if (!file_exists('LookingGlass/ratelimit.db')) {
-            return false;
+            exit('SQLITE - Rate limit is activated. The file \'Looking Glass/rate limit.db\' could not be found.');
         }
 
         // connect to DB
         try {
             $dbh = new \PDO('sqlite:LookingGlass/ratelimit.db');
         } catch (PDOException $e) {
-            exit($e->getMessage());
+            // check error code of execution
+            $this->ErrorMessage($q);
         }
 
         // check for IP
-        $q = $dbh->prepare('SELECT * FROM RateLimit WHERE ip = ?');
-        $q->execute(array($_SERVER['REMOTE_ADDR']));
-        $row = $q->fetch(\PDO::FETCH_ASSOC);
+        try {
+            $q = $dbh->prepare('SELECT * FROM RateLimit WHERE ip = ?');
+            $q->execute(array($_SERVER['REMOTE_ADDR']));
+            $row = $q->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            // check error code of execution
+            $this->ErrorMessage($q);
+        }
 
         // save time by declaring time()
         $time = time();
@@ -56,9 +62,13 @@ class RateLimit
         // if IP does not exist
         if (!isset($row['ip'])) {
             // create new record
-            $q = $dbh->prepare('INSERT INTO RateLimit (ip, hits, accessed) VALUES (?, ?, ?)');
-            $q->execute(array($_SERVER['REMOTE_ADDR'], 1, $time));
-            return true;
+            try {
+                $q = $dbh->prepare('INSERT INTO RateLimit (ip, hits, accessed) VALUES (?, ?, ?)');
+                $q->execute(array($_SERVER['REMOTE_ADDR'], 1, $time));
+            } catch (\PDOException $e) {
+                // check error code of execution
+                $this->ErrorMessage($q);
+            }
         }
 
         // typecast SQLite results
@@ -70,24 +80,36 @@ class RateLimit
             if ($hits >= $limit) {
                 $reset = (int) (($accessed - $time) / 60);
                 if ($reset <= 1) {
-                    exit('Rate limit exceeded. Try again in: 1 minute');
+                    exit('SQLITE - Rate limit exceeded. Try again in 1 minute.');
                 }
-                exit('Rate limit exceeded. Try again in: ' . $reset . ' minutes');
+                exit('SQLITE - Rate limit exceeded. Try again in '.$reset.' minutes.');
             }
             // update hits
-            $q = $dbh->prepare('UPDATE RateLimit SET hits = ? WHERE ip = ?');
-            $q->execute(array(($hits + 1), $_SERVER['REMOTE_ADDR']));
+            try {
+                $q = $dbh->prepare('UPDATE RateLimit SET hits = ? WHERE ip = ?');
+                $q->execute(array(($hits + 1), $_SERVER['REMOTE_ADDR']));
+			} catch (\PDOException $e) {
+                // check error code of execution
+                $this->ErrorMessage($q);
+            }
         } else {
             // reset hits + accessed time
-            $q = $dbh->prepare('UPDATE RateLimit SET hits = ?, accessed = ? WHERE ip = ?');
-            $q->execute(array(1, time(), $_SERVER['REMOTE_ADDR']));
+            try {
+                $q = $dbh->prepare('UPDATE RateLimit SET hits = ?, accessed = ? WHERE ip = ?');
+                $q->execute(array(1, time(), $_SERVER['REMOTE_ADDR']));
+			} catch (\PDOException $e) {
+                // check error code of execution
+                $this->ErrorMessage($q);
+            }
         }
-
+		
+		// close database connection
         $dbh = null;
+		
         return true;
     }
-    
-    /**
+	
+	/**
      * Check errror code of sql execution
      *
      * @param  array $error
