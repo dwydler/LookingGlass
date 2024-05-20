@@ -13,6 +13,9 @@
 
         # The Access-Control-Allow-Origin response header indicates whether the response can be shared with requesting code from the given origin.
 	Header set Access-Control-Allow-Origin "none"
+
+        # The X-Content-Type-Options header with the value nosniff ensures that user agents do not attempt to guess the format of the data being received.
+	Header set X-Content-Type-Options "nosniff"
 </IfModule>
 
 # Disable directory indexing
