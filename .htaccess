@@ -7,6 +7,9 @@
         Header set Content-Security-Policy "default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src data:; connect-src 'self'"
         Header set X-Content-Security-Policy "default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src data:; connect-src 'self'"
         Header set X-WebKit-CSP "default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src data:; connect-src 'self'"
+
+        # The Set-Cookie HTTP response header is used to send a cookie from the server to the user agent, so that the user agent can send it back to the server later. 
+	Header always edit Set-Cookie (.*) "$1; HTTPOnly; Secure; SameSite=Strict"
 </IfModule>
 
 # Disable directory indexing
