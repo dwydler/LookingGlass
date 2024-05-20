@@ -9,6 +9,24 @@
  * @license     http://opensource.org/licenses/MIT MIT License
  */
 
+// Set an unique session name
+session_name("consentUUID");
+
+// Set session cookie details
+// Parameters: Lifetime, Path, Domain, SECURE, HTTPonly
+session_set_cookie_params(1440, "/", ".".$_SERVER["HTTP_HOST"], false, true);
+
+// Start new or resume existing session
+session_start();
+
+// Generate a unique id for php session
+if (function_exists('random_bytes')) {
+        $_SESSION['csrf'] = bin2hex(random_bytes(32));
+}
+else {
+        $_SESSION['csrf'] = bin2hex(openssl_random_pseudo_bytes(32));
+}
+
 // check php version
 if (version_compare(phpversion(), '8.0', '<')) {
 	exit('This PHP Version '.phpversion().' is not supportet.');
@@ -174,7 +192,8 @@ else {
 									?>
 								</select>
 							</div>
-
+							
+							<input type="hidden" name="csrf" value="<?php echo $_SESSION["csrf"]; ?>">
 							<button type="submit" id="submit" name="submit" class="btn btn-success"><?php echo _("Run Test"); ?></button>
 						</form>
 					</div>
