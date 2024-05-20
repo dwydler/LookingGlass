@@ -1,3 +1,9 @@
+<IfModule mod_headers.c>
+        # The X-Frame-Options HTTP response header can be used to indicate whether
+        # or not a browser should be allowed to render a page in a <frame>, <iframe> or <object> .
+        Header always set X-Frame-Options SAMEORIGIN
+</IfModule>
+
 # Disable directory indexing
 Options -Indexes
 
