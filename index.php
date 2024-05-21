@@ -129,10 +129,18 @@ if ( !isset ($_SESSION["theme"])) {
 						?>
 					</div>
 					<div class="card-body" style="height: 200px;">
-						<p><?php echo _("Server Location"); ?>: <strong><?php echo $serverLocation; ?></strong></p>
-						<p><?php echo _("IPv4 Address").": ".$ipv4; ?></p>
-						<?php if (!empty($ipv6)) { echo "<p>"._("IPv6 Address").": ".$ipv6."</p>"; } ?>
-						<p><?php echo _("Your IP Address"); ?>: <strong><a href="#tests" id="userip"><?php echo $_SERVER['REMOTE_ADDR']; ?></a></strong></p>	
+						<?php
+						echo "<p>"._("Server Location").": <strong>".$serverLocation."</strong></p>";
+						
+						if ( (!empty($ipv4)) ) {
+							echo "<p>"._("IPv4 Address").": ".$ipv4."</p>";
+						}			
+						if ( (!empty($ipv6)) ) {
+							echo "<p>"._("IPv6 Address").": ".$ipv6."</p>";
+						}
+
+						echo "<p>"._("Your IP Address").": <strong><a href=\"#tests\" id=\"userip\">".$_SERVER['REMOTE_ADDR']."</a></strong></p>";
+						?>
 					</div>
 				</div>
 			</div>
@@ -170,24 +178,27 @@ if ( !isset ($_SESSION["theme"])) {
 				<div class="card">
 					<div class="card-header"><?php echo _("Network Test Files"); ?></div>
 					<div class="card-body" style="height: 200px;">
-						<h4><?php echo _("IPv4 Download Test"); ?></h4>
 						<?php
-						foreach ($testFiles as $val) {
-							echo "<a href=\"";
-							if ( !empty($siteUrlv4)) { echo $siteUrlv4; }
-							else  { echo $siteUrl; }
-							echo "/{$val}.bin\" class=\"btn btn-xs btn-secondary\">{$val}</a> ";
-						}
-	
-						if (!empty($ipv6)) {
-							echo "<h4>"._("IPv6 Download Test")."</h4>";
+						if (!empty($ipv4)) {
+							echo "<h4>"._("IPv4 Download Test")."</h4>";
+							
 							foreach ($testFiles as $val) {
 								echo "<a href=\"";
-								if ( !empty($siteUrlv6)) { echo $siteUrlv6; }
+								if ( (!empty($siteUrlv4)) && (!empty($siteUrlv6)) ) { echo $siteUrlv4; }
 								else  { echo $siteUrl; }
-								echo "/{$val}.bin\" class=\"btn btn-xs btn-secondary\">{$val}</a> ";
+								echo "/{$val}.bin\" class=\"btn btn-xs btn-secondary\">{$val}</a>&nbsp;";
 							}
-						} 
+						}
+						if (!empty($ipv6)) {
+							echo "<h4>"._("IPv6 Download Test")."</h4>";
+
+							foreach ($testFiles as $val) {
+								echo "<a href=\"";
+								if ( (!empty($siteUrlv4)) && (!empty($siteUrlv6)) ) { echo $siteUrlv6; }
+								else  { echo $siteUrl; }
+								echo "/{$val}.bin\" class=\"btn btn-xs btn-secondary\">{$val}</a>&nbsp;";
+							}
+						} 					
 						?>
 					</div>
 				</div>
@@ -211,7 +222,8 @@ if ( !isset ($_SESSION["theme"])) {
 								<div class="form-group mr-1 col">
 									<select name="cmd" class="form-select">
 										<?php
-										if ( ((!empty($ipv4)) or (!empty($ipv6))) and (empty($host)) ) { echo '<option value="host">host/host6</option>'; }
+										if ( (!empty($ipv4)) and (empty($host)) ) { echo '<option value="host">host</option>'; }
+										if ( (!empty($ipv6)) and (empty($host)) ) { echo '<option value="host6">host6</option>'; }
 										if ( (!empty($ipv4)) and (empty($mtr)) ) { echo '<option value="mtr">mtr</option>'; }
 										if ( (!empty($ipv6)) and (empty($mtr)) ) { echo '<option value="mtr6">mtr6</option>'; }
 										if ( (!empty($ipv4)) and (empty($ping)) ) { echo '<option value="ping" selected="selected">ping</option>'; }

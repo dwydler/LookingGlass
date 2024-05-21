@@ -15,6 +15,15 @@ namespace Telephone;
  */
 class LookingGlass
 {
+    // Global variables
+    private $noIpv4Address;
+    private $noIpv6Address;
+
+    public function __construct() {
+        $this->noIpv4Address = "The Host have no valid IPv4 address.";
+        $this->noIpv6Address = "The Host have no valid IPv6 address.";
+    }
+
     /**
      * Execute a 'host' command against given host:
      * Host is a simple utility for performing DNS lookups
@@ -29,7 +38,18 @@ class LookingGlass
         if ($host = $this->validate($host)) {
             return $this->procExecute('host', $host);
         }
-        return false;
+        
+        echo $this->noIpv4Address;
+        return true;
+    }
+
+    public function host6($host) {
+        if ($host = $this->validate($host, 6)) {
+                return $this->procExecute('host', $host);
+        }
+
+        echo $this->noIpv6Address;
+        return true;
     }
 
     /**
@@ -47,7 +67,9 @@ class LookingGlass
         if ($host = $this->validate($host)) {
             return $this->procExecute('mtr -4 --report --report-wide', $host);
         }
-        return false;
+        
+        echo $this->noIpv4Address;
+        return true;
     }
 
     /**
@@ -65,7 +87,9 @@ class LookingGlass
         if ($host = $this->validate($host, 6)) {
             return $this->procExecute('mtr -6 --report --report-wide', $host);
         }
-        return false;
+        
+        echo $this->noIpv6Address;
+        return true;
     }
 
     /**
@@ -85,7 +109,9 @@ class LookingGlass
         if ($host = $this->validate($host)) {
             return $this->procExecute('ping -4 -c' . $count . ' -w15', $host);
         }
-        return false;
+        
+        echo $this->noIpv4Address;
+        return true;
     }
 
     /**
@@ -105,7 +131,9 @@ class LookingGlass
         if ($host = $this->validate($host, 6)) {
             return $this->procExecute('ping6 -c' . $count . ' -w15', $host);
         }
-        return false;
+        
+        echo $this->noIpv6Address;
+        return true;
     }
 
     /**
@@ -125,7 +153,9 @@ class LookingGlass
         if ($host = $this->validate($host)) {
             return $this->procExecute('traceroute -4 -w2', $host, $fail);
         }
-        return false;
+        
+        echo $this->noIpv4Address;
+        return true;
     }
 
     /**
@@ -145,7 +175,9 @@ class LookingGlass
         if ($host = $this->validate($host, 6)) {
             return $this->procExecute('traceroute -6 -w2', $host, $fail);
         }
-        return false;
+        
+        echo $this->noIpv6Address;
+        return true;
     }
 
     // ==================================================================
@@ -298,6 +330,9 @@ class LookingGlass
         elseif ($type === 6 && $this->validIP($host, 4)) {
             return false;
         }
+        elseif ($type === 4 && $this->validIP($host, 6)) {
+            return false;
+        }
         // validate url
         elseif ($host = $this->validUrl($host)) {
             return $host;
@@ -315,20 +350,51 @@ class LookingGlass
      * @return boolean
      *   True on success
      */
-    private function validIP($host, $type = 4)
-    {
-        // validate IPv4
-        if ($type === 4) {
-            if (filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE)) {
-                return true;
-            }
+    private function validIP($host, $type = 4) {
+        // Query if $host name is an CNAME entry
+        $dns = dns_get_record($host, DNS_CNAME);
+
+        // Check if $Host perhaps an FQDN which is an CNAME entry
+        if (isset($dns[0]["type"]) == "CNAME" ) {
+            $host = $dns[0]["target"];
         }
-        // validate IPv6
         else {
-            if (filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+            // Assign the given value
+            $ip = $host;
+        }
+
+        // Validate IPv4
+        if ($type === 4) {
+            // Resolving DNS A record
+            $dns = dns_get_record($host, DNS_A);
+
+            // If DNS lookup successfully overwrite default value
+            if(isset($dns[0]["ip"])) {
+                $ip = $dns[0]["ip"];
+            }
+
+            // Check if the given ip address matches
+            if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE)) {
                 return true;
             }
         }
+
+        // Validate IPv6
+        if ($type === 6) {
+            // Resolving DNS AAAA record
+            $dns = dns_get_record($host, DNS_AAAA);
+
+            // If DNS lookup successfully overwrite default value
+            if(isset($dns[0]["ipv6"])) {
+                $ip = $dns[0]["ipv6"];
+            }
+
+            // Check if the given ip address matches
+            if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+                return true;
+            }
+        }
+        
         return false;
     }
 
