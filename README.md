@@ -5,83 +5,95 @@
 LookingGlass is a user-friendly PHP based looking glass that allows the public (via a web interface) to execute network
 commands on behalf of your server.
 
-It's recommended that everyone updates their existing install!
+## Demo
+[Looking Glass](https://lg.daniel.wydler.eu/)
+
+Demo is running on a Cloud Server of Hetzner Online GmbH. 
 
 ## Features
 
-* Automated install via bash script
-* IPv4 & IPv6 support
+* Automated configuration via bash script
+* IPv4 & IPv6 support (DualStack, Only IPv4 or IPv6)
 * Live output via long polling
-* Multiple themes
+* Multi Language supported. New Languages are Welcome!
 * Rate limiting of network commands
+* Dark Mode
 
 ## Implemented commands
 
-* host
-* mtr
-* mtr6 (IPv6)
-* ping
-* ping6 (IPv6)
-* traceroute
-* traceroute6 (IPv6)
+* host (IPv4 und IPv6)
+* mtr (IPv4 und IPv6)
+* ping (IPv4 und IPv6)
+* traceroute  (IPv4 und IPv6)
+* iPerf/iPerf3 (IPv4 und IPv6)
 
-__IPv6 commands will only work if your server has external IPv6 setup (or tunneled)__
+> [!IMPORTANT]
+> IPv4 commands will only available if your server has external IPv4 address.  
+> IPv6 commands will only available if your server has external IPv6 address.
 
 ## Requirements
 
-* PHP >= 5.3
-* PHP PDO with SQLite driver (required for rate-limit)
+* Debian/Ubuntu Server
+* PHP >= 8.0
+* PHP PDO with SQLite driver (required for rate-limit), ` apt install -y php-sqlite3`
 * SSH/Terminal access (able to install commands/functions if non-existent)
+* Make sure the PHP function proc_open and proc_get_status is usable
 
-## Install
+## Install Looking Glass
 
-1. Download [LookingGlass](https://github.com/telephone/LookingGlass/archive/v1.3.0.tar.gz) to the intended
-folder within your web directory
-2. Extract archive:
-    - Option #1 - Extract archive to the current directory:
-        - `tar -zxvf LookingGlass-1.3.0.tar.gz --strip-components 1`
-    - Option #2 - Extract archive to a directory named `LookingGlass`:
-        - `tar -zxvf LookingGlass-1.3.0.tar.gz --transform 's!^[^/]\+\($\|/\)!LookingGlass\1!'`
-3. Navigate to the `LookingGlass` subdirectory in terminal
-4. Run `bash configure.sh`
-5. Follow the instructions and `configure.sh` will take care of the rest
+1. Clone the repository to the correct folder:
+  ```
+   git clone -b customize https://github.com/dwydler/mta-sts-docker.git /var/www/html/LookingGlass
+   git -C /var/www/html/LookingGlass checkout $(git -C /var/www/html/LookingGlass tag | tail -1)
+  ```
+2. Navigate to the `LookingGlass` subdirectory in terminal:
+  ```
+  cd /var/www/html/LookingGlass
+  ```  
+3. Run `bash configure.sh`.
+4. Follow the instructions and `configure.sh` will take care of the rest.
+	- Note: Re-enter test files to create random test files from `GNU shred`.
 
-_Forgot a setting? Simply run the `configure.sh` script again_
+_Forgot a setting? Simply run the `bash configure.sh` script again._
 
-## Updating
+## Setup iperf/iperf3 as a service (optional)
+If you want to use the iPerf / iPerf3 tool and have installed it, it must also be configured as a systemd service. This means that the tool is automatically started every time the server is restarted. This is described here. **Starting with Debian 12/Ubuntu 24.04, the service is set up automatically.**
 
-1. Download [LookingGlass](https://github.com/telephone/LookingGlass/archive/v1.3.0.tar.gz) to the folder containing
-your existing install
-2. Extract archive: `tar -zxvf LookingGlass-1.3.0.tar.gz --overwrite --strip-components 1`
-    - This will overwrite/update existing files
-3. Navigate to the `LookingGlass` subdirectory in terminal
-4. Run `bash configure.sh`
-5. Follow the instructions and `configure.sh` will take care of the rest
-    - Note: Re-enter test files to create random test files from `GNU shred`
+1. Code for the systemd service file:
+```
+cat <<- EOF > /etc/systemd/system/iperf3.service
+[Unit]
+Description=iperf3 server
+After=syslog.target network.target auditd.service
 
-_Forgot a setting? Simply run the `configure.sh` script again_
+[Service]
+ExecStart=/usr/bin/iperf3 -s
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+2. Enable the service: `systemctl enable iperf3.service`.
+4. Start the service: `systemctl start iperf3.service`.
+5. Check the status of the service: `systemctl status iperf3.service`.
 
 ## Apache
+1. Install Apache + PHP-FPM: `apt update && apt install -y apache2 php-fpm`.
+2. Enable the "headers", “proxy_fcgi” and “proxy” modules `a2enmod headers proxy_fcgi proxy && systemctl restart apache2`.
+3. A rudimentary configuration for Apache can be found here: [HTTP setup](misc/lookingglass-http.apache.conf)
 
-An .htaccess is included which protects the rate-limit database, disables indexes, and disables gzip on test files.
-Ensure `AllowOverride` is on for .htaccess to take effect.
+> [!NOTE]
+> An .htaccess is included which protects the rate-limit database, disables indexes, and disables gzip on test files.
+Ensure `AllowOverride` is on for .htaccess to take effect. Output buffering __should__ work by default.
 
-Output buffering __should__ work by default.
-
-For an HTTPS setup, please visit:
-- [Mozilla SSL Configuration Generator](https://mozilla.github.io/server-side-tls/ssl-config-generator/)
+For an HTTPS setup, please visit: [Mozilla SSL Configuration Generator](https://ssl-config.mozilla.org/)
 
 ## Nginx
 
-To enable output buffering, and disable gzip on test files please refer to the provided configuration:
+1. Install NGINX  + PHP-FPM: `apt update && apt install -y nginx php-fpm`
+3. To enable output buffering, and disable gzip on test files please refer to the provided configuration: [HTTP setup](misc/lookingglass-http.nginx.conf). The provided config is setup for LookingGlass to be on a subdomain/domain root.
 
-[HTTP setup](LookingGlass/lookingglass-http.nginx.conf)
-
-The provided config is setup for LookingGlass to be on a subdomain/domain root.
-
-For an HTTPS setup please visit:
-- [Best nginx configuration for security](http://tautt.com/best-nginx-configuration-for-security/)
-- [Mozilla SSL Configuration Generator](https://mozilla.github.io/server-side-tls/ssl-config-generator/)
+For an HTTPS setup please visit: [Mozilla SSL Configuration Generator](https://ssl-config.mozilla.org/)
 
 ## License
 
