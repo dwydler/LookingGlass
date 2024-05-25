@@ -514,6 +514,7 @@ TEST=()
 # Install required scripts
 echo 'Checking script requirements:'
 requirements
+read -p "Press any key to continue or CTRL+C to cancel..." -n1 -s
 echo
 # Read Config file
 echo 'Checking for previous config:'
