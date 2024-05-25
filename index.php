@@ -58,6 +58,13 @@ if( (!in_array("sqlite", PDO::getAvailableDrivers())) and (empty($sqlite3)) ) {
 	exit('PDO driver for SQLite is not installed on this system (e.g. apt install php-sqlite3).');
 }
 
+// Check whether the locales are configured for all languages
+foreach( (array_diff(scandir("locale/"), array('..', '.'))) as $x ) {
+	if( !setlocale(LC_ALL, ($x.".UTF-8") ) ) {
+		exit("Locale '".$x.".UTF-8' not installed. Please run: locale-gen ".$x.".UTF-8 && update-locale");
+	}
+}
+
 // include multi language sytem
 if ( (isset($_GET["lang"])) && (preg_match("/^[a-z]{2}\_[A-Z]{2}$/",$_GET["lang"])) ) {
 	$locale = $_GET["lang"];
