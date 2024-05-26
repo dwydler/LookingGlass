@@ -35,7 +35,7 @@ Demo is running on a Cloud Server of Hetzner Online GmbH.
 
 * Debian/Ubuntu Server
 * PHP >= 8.0
-* PHP PDO with SQLite driver (required for rate-limit), ` apt install -y php-sqlite3`
+* PHP PDO with SQLite driver (required for rate-limit), `apt install -y php-sqlite3`
 * SSH/Terminal access (able to install commands/functions if non-existent)
 * Make sure the PHP function proc_open and proc_get_status is usable
 
@@ -48,7 +48,7 @@ Demo is running on a Cloud Server of Hetzner Online GmbH.
   ```
 2. Navigate to the `LookingGlass` subdirectory in terminal:
   ```
-  cd /var/www/html/LookingGlass
+  cd /var/www/html/LookingGlass/
   ```  
 3. Run `bash configure.sh`.
 4. Follow the instructions and `configure.sh` will take care of the rest.
