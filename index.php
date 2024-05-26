@@ -104,7 +104,7 @@ if ( !isset ($_SESSION["theme"])) {
 	</script>
 
     <!-- Styles -->
-    <link href="assets/css/bootstrap-5.3.3.min.css" rel="stylesheet" integrity="sha384-iyVHgWdgbOYA1Qxlw7jRhcp52l0uPEs4zrd0MRrcr1fDCFRPyz0k1VrxB1urC55B" crossorigin="anonymous">
+    <link href="assets/css/bootstrap-5.3.3.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   </head>
   <body>
 	<!-- Container -->
@@ -311,8 +311,8 @@ if ( !isset ($_SESSION["theme"])) {
     <!-- /Container -->
 
     <!-- Javascript -->
-    <script src="assets/js/jquery-3.7.1.min.js" integrity="sha384-apfJm2DWye6itJXDari7QfgbBXzkNeRsr1xgTfEH0SCvYV+NlzqP+MkX/LHMZIPI" crossorigin="anonymous"></script>
-    <script src="assets/js/LookingGlass.min.js" integrity="sha384-Tbgm/vXUm6Le/ApkQDxgXBuafP9YrqDbN4yBnmqHJTm0faV4XSXnRnAASanqOwxI" crossorigin="anonymous"></script>
-	<script src="assets/js/XMLHttpRequest.min.js" integrity="sha384-AaUK7ss8NSkclbHjauecZLxIH0t/QJxHmEUEbWIg1QSlBYMjD6o52TJp0kOtDsef" crossorigin="anonymous"></script>
+    <script src="assets/js/jquery-3.7.1.min.js" integrity="sha384-1H217gwSVyLSIfaLxHbE7dRb3v4mYCKbpQvzx0cegeju1MVsGrX5xXxAvs/HgeFs" crossorigin="anonymous"></script>
+    <script src="assets/js/LookingGlass.min.js" integrity="sha384-DnfYT6A4+pnOnrp+XxSBLwDcx6EpAADA+E9GPB8KWbN9ZXoOb85KVumJTyvbmK9H" crossorigin="anonymous"></script>
+	<script src="assets/js/XMLHttpRequest.min.js" integrity="sha384-4VZLxIdUn1yFnVIpiKDpf6aLhTZKitRINfJd0cyDjhM9c0fh+GzljUdTy38VXCvP" crossorigin="anonymous"></script>
   </body>
 </html>
