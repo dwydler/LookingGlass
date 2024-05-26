@@ -56,6 +56,18 @@ Demo is running on a Cloud Server of Hetzner Online GmbH.
 
 _Forgot a setting? Simply run the `bash configure.sh` script again._
 
+## Update Looking Glass
+1. When you're ready to update the code, you can checkout the latest tag:
+  ```
+   ( cd /var/www/html/LookingGlass && git fetch && git checkout $(git tag | tail -1) )
+  ```
+2. . Navigate to the `LookingGlass` subdirectory in terminal:
+  ```
+  cd /var/www/html/LookingGlass/LookingGlass/
+  ```  
+3. Run `bash configure.sh`.
+4. Follow the instructions and `configure.sh` will take care of the rest.
+
 ## Setup iperf/iperf3 as a service (optional)
 If you want to use the iPerf / iPerf3 tool and have installed it, it must also be configured as a systemd service. This means that the tool is automatically started every time the server is restarted. This is described here. **Starting with Debian 12/Ubuntu 24.04, the service is set up automatically.**
 
