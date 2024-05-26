@@ -1,3 +1,28 @@
+## v2.0.0 - 2024/05/26
+
+### Security
+* Added different Security Headers for Apache und NGINX configuration
+* Added Cross-Site Request Forgery (CSRF) protection
+* Source code adapted for PHP 8.x and higher. PHP 7.x not supported anymore.
+
+### Changes
+* Added  Darkmode to hte UI
+* jQuery and Bootstrap CSS updated to the latest version
+* Layout of the page completely revised
+* Added support for the tool iPerf / iPerf3
+* Added support for IPv4 oder IPv6 only operation
+* README.md completely revised and expanded
+* Added sample configuration for Apache and NGINX Webserver
+* Added link for legal notice and privacy policy
+* Added multi language support to the UI
+* HTML source code is now W3C compliant
+* Hyperlinks now open in a new tab/window by default.
+
+### Bugs
+* The ping function now only uses the IPv4 address of the target.
+* If the FQDN does not have a valid IPv4 or IPv6 address, an error message is now output.
+
+
 ## 1.3.0 - 2015/01/25
 * Fix RDNS XSS
 * Fix '&nbsp;' being escaped by temporary patch (SHA a421a8e)
