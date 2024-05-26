@@ -43,7 +43,7 @@ Demo is running on a Cloud Server of Hetzner Online GmbH.
 
 1. Clone the repository to the correct folder:
   ```
-   git clone -b customize https://github.com/dwydler/mta-sts-docker.git /var/www/html/LookingGlass
+   git clone -b customize https://github.com/dwydler/LookingGlass.git /var/www/html/LookingGlass
    git -C /var/www/html/LookingGlass checkout $(git -C /var/www/html/LookingGlass tag | tail -1)
   ```
 2. Navigate to the `LookingGlass` subdirectory in terminal:
