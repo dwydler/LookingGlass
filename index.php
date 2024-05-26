@@ -161,7 +161,7 @@ if ( !isset ($_SESSION["theme"])) {
 					</div>
 					<div class="card-body" style="height: 200px;">
 						<?php 
-						if (empty($iperf3) ) {
+						if ( (empty($iperf3)) && (!empty($iperfport)) ) {
 							if (!empty($ipv4)) {
 								echo "<p><u>"._("IPv4")."</u><br>
 								iperf3.exe -c ".$ipv4." -p 5201 -P 4<br>
