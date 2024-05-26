@@ -1,3 +1,12 @@
+## v2.0.1 - 2024/05/26
+
+### Security
+* Fixed SRI Hashes for all css and js files
+
+### Bugfixes
+* Fixed URL to correct GitHub repository (README.md)
+
+
 ## v2.0.0 - 2024/05/26
 
 ### Security
