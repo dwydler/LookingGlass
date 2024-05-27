@@ -333,26 +333,26 @@ function setup()
   local U=
 
   # User input
-  read -e -p "Enter your website name (Header/Logo) [${SITE}]: " S
-  read -e -p "Enter the public URL to this LG (including http://) [${URL}]: " U
-  read -e -p "Enter the test IPv4 address [${IPV4}]: " -i "$IP4" IP4
-  read -e -p "Enter the test IPv6 address [${IPV6}]: " -i "$IP6" IP6
+  read -e -p "Enter your website name (Header/Logo): " -i "$SITE" S
+  read -e -p "Enter the public URL to this LG (e.g. https://lg.domain.de): " -i "$URL" U
+  read -e -p "Enter the public IPv4 address of this server: " -i "$IP4" IP4
+  read -e -p "Enter the public IPv6 address of this server: " -i "$IP6" IP6
 
   if [ -n "$IP4" ] && [ -n "$IP6" ]; then
-    read -e -p "Enter the public URLv4 to this LG (including http://) [${URLV4}]: " -i "$URLV4" UV4
-    read -e -p "Enter the public URLv6 to this LG (including http://) [${URLV6}]: " -i "$URLV6" UV6
+    read -e -p "Enter the public URLv4 to this LG (e.g. https://4.lg.domain.de): " -i "$URLV4" UV4
+    read -e -p "Enter the public URLv6 to this LG (e.g. https://6.lg.domain.de): " -i "$URLV6" UV6
   fi
 
-  read -e -p "Enter the public URL to an Privacy [${PRIVACYURL}]: " -i "$PRIVACYURL" PRIURL
-  read -e -p "Enter the public URL to an Imprint [${IMPRINTURL}]: " -i "$IMPRINTURL" IMPURL
-  read -e -p "Enter the servers location [${LOCATION}]: " LOC
+  read -e -p "Enter the public URL to an Privacy (e.g. https://domain.de/pr): " -i "$PRIVACYURL" PRIURL
+  read -e -p "Enter the public URL to an Imprint (e.g. https://domain.de/im): " -i "$IMPRINTURL" IMPURL
+  read -e -p "Enter the servers location (e.g. DE, Frankfurt): " -i "$LOCATION" LOC
 
 
   if [ -z "$IPERF3" ]; then
-    read -e -p "Enter the Port for the Ipref Server [${IPERFPORT}]: " -i "$IPERFPORT" IPP
+    read -e -p "Enter the Port for the Ipref Server (e.g. 5201): " -i "$IPERFPORT" IPP
   fi
 
-  read -e -p "Enter the size of test files in MB (Example: 25MB 50MB 100MB) [${TEST[*]}]: " T
+  read -e -p "Enter the size of test files in MB (e.g.: 500MB 1GB 10GB): " -i "${TEST[*]}" T
 
   if [ -z $SQLITE3 ]; then
     # Set default value
@@ -368,24 +368,16 @@ function setup()
     read -e -p "Do you wish to enable rate limiting of network commands? (y/n): " -i "$YESNO" RATE
   fi
 
-  # Check local vars aren't empty; Set new values
-  if [[ -n $LOC ]]; then
-    LOCATION=$LOC
-  fi
-  if [[ -n $S ]]; then
-    SITE=$S
-  fi
-  if [[ -n $U ]]; then
-    URL=$U
-  fi
-
   # Assign entered value to script variable, can be left blank
+  SITE=$S
+  URL=$U
   IPV4=$IP4
   IPV6=$IP6
   URLV4=$UV4
   URLV6=$UV6
   PRIVACYURL=$PRIURL
   IMPRINTURL=$IMPURL
+  LOCATION=$LOC
   IPERFPORT=$IPP
 
   # Rate limit
