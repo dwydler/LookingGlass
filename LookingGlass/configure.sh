@@ -400,33 +400,66 @@ function setup()
     RATELIMIT=0
   fi
 
-  # Create test files
-  if [[ -n $T ]]; then
-    echo
-    echo 'Removing old test files:'
+  # Output blank line
+  echo
+
+  # Delete and/or create test files
+  if [[ -z $T ]]; then
     # Delete old test files
-    local REMOVE=($(ls ../*.bin 2>/dev/null))
-    for i in "${REMOVE[@]}"; do
-      if [ -f "${i}" ]; then
-        echo "Removing ${i}"
-        rm "${i}"
-        sleep 1
-      fi
-    done
-    TEST=($T)
+    DeleteTestFiles
+
+    # Output blank line
     echo
-    echo 'Creating new test files:'
+
+    # Assigned content of a variable to a new variable
+    TEST=($T)
+  fi
+  
+  if [[ -n $T ]]; then
+    # Delete old test files
+    DeleteTestFiles
+
+    # Assigned content of a variable to a new variable
+    TEST=($T)
+
     # Create new test files
-    testFiles
+    CreateTestFiles
   fi
 }
 
 ##
+# Delete test files
+##
+function DeleteTestFiles() {
+  sleep 1
+  echo "Removing old test files:"
+
+   # Local var/s
+  local A=0
+  
+  # Delete old test files
+  local REMOVE=($(ls ../*.bin 2>/dev/null))
+  for i in "${REMOVE[@]}"; do
+    if [ -f "${i}" ]; then
+      echo "Removing ${i}"
+      rm "${i}"
+      A=$((A+1))
+      sleep 1
+    fi
+  done
+
+  # No test files were created
+  if [ $A = 0 ]; then
+    echo 'Test files already removed...'
+  fi
+}
+##
 # Create test files
 ##
-function testFiles()
-{
+function CreateTestFiles() {
   sleep 1
+
+  echo "Creating new test files:"
 
   # Local var/s
   local A=0
@@ -521,9 +554,9 @@ echo 'Checking for previous config:'
 config
 echo
 # Create test files
-echo 'Creating test files:'
-testFiles
+CreateTestFiles
 echo
+
 # Follow setup
 cat <<EOF
 
