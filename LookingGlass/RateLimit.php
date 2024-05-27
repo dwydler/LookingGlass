@@ -20,10 +20,12 @@ class RateLimit
      *
      * @param  integer $limit
      *   Number of commands per hour
+     * @param  string  $clientip
+     *   The real client ip
      * @return boolean
      *   True on success
      */
-    public function rateLimit($limit)
+    public function rateLimit($limit, $clientip)
     {
         // check if rate limit is disabled
         if ($limit === 0) {
@@ -49,7 +51,7 @@ class RateLimit
         // check for IP
         try {
             $q = $dbh->prepare('SELECT * FROM RateLimit WHERE ip = ?');
-            $q->execute(array($_SERVER['REMOTE_ADDR']));
+            $q->execute(array($clientip));
             $row = $q->fetch(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
             // check error code of execution
@@ -64,7 +66,7 @@ class RateLimit
             // create new record
             try {
                 $q = $dbh->prepare('INSERT INTO RateLimit (ip, hits, accessed) VALUES (?, ?, ?)');
-                $q->execute(array($_SERVER['REMOTE_ADDR'], 1, $time));
+                $q->execute(array($clientip, 1, $time));
             } catch (\PDOException $e) {
                 // check error code of execution
                 $this->ErrorMessage($q);
@@ -87,7 +89,7 @@ class RateLimit
             // update hits
             try {
                 $q = $dbh->prepare('UPDATE RateLimit SET hits = ? WHERE ip = ?');
-                $q->execute(array(($hits + 1), $_SERVER['REMOTE_ADDR']));
+                $q->execute(array(($hits + 1), $clientip));
 			} catch (\PDOException $e) {
                 // check error code of execution
                 $this->ErrorMessage($q);
@@ -96,7 +98,7 @@ class RateLimit
             // reset hits + accessed time
             try {
                 $q = $dbh->prepare('UPDATE RateLimit SET hits = ?, accessed = ? WHERE ip = ?');
-                $q->execute(array(1, time(), $_SERVER['REMOTE_ADDR']));
+                $q->execute(array(1, time(), $clientip));
 			} catch (\PDOException $e) {
                 // check error code of execution
                 $this->ErrorMessage($q);

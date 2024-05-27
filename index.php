@@ -82,7 +82,14 @@ if ( !isset ($_SESSION["theme"])) {
 	$_SESSION["theme"] = "light";
 }
 
+// Include required scripts
+$required = array('Functions.php');
+
+foreach ($required as $val) {
+	require 'LookingGlass/' . $val;
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="<?php echo $_SESSION["theme"]; ?>">
   <head>
@@ -146,7 +153,7 @@ if ( !isset ($_SESSION["theme"])) {
 							echo "<p>"._("IPv6 Address").": ".$ipv6."</p>";
 						}
 
-						echo "<p>"._("Your IP Address").": <strong><a href=\"#tests\" id=\"userip\">".$_SERVER['REMOTE_ADDR']."</a></strong></p>";
+						echo "<p>"._("Your IP Address").": <strong><a href=\"#tests\" id=\"userip\">".get_client_ip()."</a></strong></p>";
 						?>
 					</div>
 				</div>

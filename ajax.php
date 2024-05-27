@@ -35,7 +35,7 @@ if (!empty($_GET["csrf"])) {
 			// verify command
 			if (in_array($_GET['cmd'], $cmds)) {
 				// include required scripts
-				$required = array('LookingGlass.php', 'RateLimit.php', 'Config.php');
+				$required = array('LookingGlass.php', 'RateLimit.php', 'Config.php', 'Functions.php');
 				foreach ($required as $val) {
 					require 'LookingGlass/' . $val;
 				}
@@ -50,7 +50,7 @@ if (!empty($_GET["csrf"])) {
 				$limit = new Telephone\LookingGlass\RateLimit($rateLimit);
 
 				// check IP against database
-				$limit->rateLimit($rateLimit);
+				$limit->rateLimit($rateLimit, get_client_ip());
 
 				// execute command
 				$output = $lg->{$_GET['cmd']}($_GET['host']);
