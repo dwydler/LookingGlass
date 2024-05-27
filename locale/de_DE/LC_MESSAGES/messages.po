@@ -118,3 +118,7 @@ msgstr "Iperf ist auf diesem Server nicht konfiguriert"
 #: index.php
 msgid "Iperf Help"
 msgstr "Hilfe"
+
+#: index.php
+msgid "No network testing files"
+msgstr "Es stehen keine Testdateien zur Verfügung"

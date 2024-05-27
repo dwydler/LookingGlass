@@ -186,26 +186,32 @@ if ( !isset ($_SESSION["theme"])) {
 					<div class="card-header"><?php echo _("Network Test Files"); ?></div>
 					<div class="card-body" style="height: 200px;">
 						<?php
-						if (!empty($ipv4)) {
-							echo "<h4>"._("IPv4 Download Test")."</h4>";
-							
-							foreach ($testFiles as $val) {
-								echo "<a href=\"";
-								if ( (!empty($siteUrlv4)) && (!empty($siteUrlv6)) ) { echo $siteUrlv4; }
-								else  { echo $siteUrl; }
-								echo "/{$val}.bin\" class=\"btn btn-xs btn-secondary\">{$val}</a>&nbsp;";
+						if (count(array_keys(($testFiles))) > 0) {
+						
+							if (!empty($ipv4)) {
+								echo "<h4>"._("IPv4 Download Test")."</h4>";
+								
+								foreach ($testFiles as $val) {
+									echo "<a href=\"";
+									if ( (!empty($siteUrlv4)) && (!empty($siteUrlv6)) ) { echo $siteUrlv4; }
+									else  { echo $siteUrl; }
+									echo "/{$val}.bin\" class=\"btn btn-xs btn-secondary\">{$val}</a>&nbsp;";
+								}
+							}
+							if (!empty($ipv6)) {
+								echo "<h4>"._("IPv6 Download Test")."</h4>";
+
+								foreach ($testFiles as $val) {
+									echo "<a href=\"";
+									if ( (!empty($siteUrlv4)) && (!empty($siteUrlv6)) ) { echo $siteUrlv6; }
+									else  { echo $siteUrl; }
+									echo "/{$val}.bin\" class=\"btn btn-xs btn-secondary\">{$val}</a>&nbsp;";
+								}
 							}
 						}
-						if (!empty($ipv6)) {
-							echo "<h4>"._("IPv6 Download Test")."</h4>";
-
-							foreach ($testFiles as $val) {
-								echo "<a href=\"";
-								if ( (!empty($siteUrlv4)) && (!empty($siteUrlv6)) ) { echo $siteUrlv6; }
-								else  { echo $siteUrl; }
-								echo "/{$val}.bin\" class=\"btn btn-xs btn-secondary\">{$val}</a>&nbsp;";
-							}
-						} 					
+						else {
+							echo _("No network testing files").".";
+						}
 						?>
 					</div>
 				</div>
