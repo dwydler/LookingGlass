@@ -298,7 +298,7 @@ EOF
     if [ "$INSTALL" = "yum" ]; then
       echo "Please install: ${INSTALL} -y install sqlite-devel."
     else
-      echo "Please install: ${INSTALL} -y install sqlite3."
+      echo "Please install: ${INSTALL} -y install sqlite3 php-sqlite3."
     fi
     echo
   fi
