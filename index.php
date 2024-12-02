@@ -28,7 +28,7 @@ else {
 }
 
 // check php version
-if (version_compare(phpversion(), '8.0', '<')) {
+if (version_compare(phpversion(), '8.1', '<')) {
 	exit('This PHP Version '.phpversion().' is not supportet.');
 }
 
